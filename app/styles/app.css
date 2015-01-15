@@ -1,0 +1,38 @@
+html, body {
+  margin: 20px;
+}
+
+.list-container {
+  margin: 40px;
+  border: 1px solid #999;
+}
+
+.list-item {
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #999;
+  position:relative; 
+  overflow:hidden;
+}
+
+.list-item-content {
+  position: relative; 
+  z-index: 2; 
+  height: 100%; 
+  padding: 0 10px; 
+  background-color: lightblue; 
+  ztransform: translate3d(-200px,0,0);
+} 
+
+.list-item-option {
+  position: absolute; 
+  z-index: 1; 
+  top:0; 
+  right: 0; 
+  text-align: right; 
+  height: 100%; 
+  width: 200px; 
+  padding: 0 10px; 
+  background-color: lightgreen; 
+}
+ 

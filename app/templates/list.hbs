@@ -1,0 +1,23 @@
+<div class="list-container">
+{{#each item in items}}
+  <div class="list-item">
+
+
+    {{#pan-list-item}}
+      {{item}}
+    {{/pan-list-item}}
+
+    <div class="list-item-option">
+        {{fa-icon "camera" size="lg"}}
+        {{fa-icon "edit" size="lg"}}
+        {{fa-icon "envelope" size="lg"}}
+        {{fa-icon "flag-o" size="lg"}}  
+        {{fa-icon "heart" size="lg"}}
+        {{fa-icon "comment-o" size="lg"}}
+        {{fa-icon "cloud-download" size="lg"}}
+
+    </div>
+
+  </div>
+{{/each}}
+</div>
