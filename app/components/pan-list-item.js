@@ -1,3 +1,4 @@
+
 import Ember from 'ember';
 
 export default Ember.Component.extend({
@@ -22,6 +23,10 @@ export default Ember.Component.extend({
   revealClip: function() {
     return Math.round((this.get('revealWidth') / 2),0);  
   }.property('revealWidth'),
+
+  panStart: function(ev) {
+    console.log('panStart!, element:', this.get('elementId'));    
+  },
 
   panLeft: function(ev) {
     var deltaX = this.get('startX') + ev.originalEvent.gesture.deltaX;
