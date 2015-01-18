@@ -7,8 +7,6 @@ export default Ember.Component.extend({
   lastDeltaX: 0,
 
   isOpen: false,
-
-
   hammer: null, 
 
 
@@ -18,16 +16,22 @@ export default Ember.Component.extend({
   }.on('init'),
 
   _setupHammer: function() {
-    var hammer = new Hammer(this.get('element'), {});
 
-    hammer.on('tap', this.tapped);
-    hammer.on('panLeft', this.panLeft);
-    hammer.on('panRight', this.panRight);
-    hammer.on('panEnd', this.panEnd);
+    var _this = this,
+        hammer = Hammer(_this.get('element'), {});
 
-    hammer.on("pan", this.handlePan);
+    hammer.get('pan').set({
+      direction: Hammer.DIRECTION_HORIZONTAL,
+      threshold: 10
+    });
 
+    hammer.on('tap', _this.tapped);
+    hammer.on('panleft', _this.panLeft);
+    hammer.on('panright', _this.panRight);
+    hammer.on('panend', _this.panEnd);
+    
     this.set('hammer', hammer);
+
   }.on('didInsertElement'),
 
   _teardownHammer: function () {
@@ -39,12 +43,16 @@ export default Ember.Component.extend({
     }
 
     this.set('hammer', null);
-    //PreventGhostClicks.remove(element);
+    // PreventGhostClicks.remove(element);
+
+    // willDestroy
   }.on('willDestroyElement'),
 
   tapped: function() {
     console.log("TAPPED OUT, MY MAN!!!");
   },
+
+
 
   startX: function() {
     return this.get('isOpen') ? -1 * this.get('revealWidth') : 0; 
@@ -55,29 +63,27 @@ export default Ember.Component.extend({
   }.property('revealWidth'),
 
 
-  handlePan: function(ev) {
-    console.log('handlePan: ', ev);    
-  },
-
-
-  panStart: function(ev) {
-    console.log('panStart!, element:', this.get('elementId'));    
-  },
-
   panLeft: function(ev) {
+    // debugger;
+    // if (!this.get('_startX')) {
+    //   this.set('_startX', this.$()[0].position().left)
+    // }
+    // debugger;
     // var deltaX = this.get('startX') + ev.originalEvent.gesture.deltaX;
-    console.log("panLeft:", deltaX, ', element:', this.get('elementId'));
+    var deltaX = ev.deltaX;
+    console.log("panLeft:", deltaX);
     // this.animateHorizontalPan(deltaX);
   },
 
   panRight: function(ev) {
     // var deltaX = this.get('startX') + ev.originalEvent.gesture.deltaX;
-    console.log("panRight:", deltaX, ', element:', this.get('elementId'));
+    var deltaX = ev.deltaX;
+    console.log("panRight:", deltaX);
     // this.animateHorizontalPan(deltaX);
   },
 
   panEnd: function(ev) {
-    console.log('panEnd', ', element:', this.get('elementId'));
+    console.log('panEnd');
 
     // if (Math.abs(this.get('lastDeltaX')) <= this.get('revealClip')) {
     //   this.set('isOpen', false);
