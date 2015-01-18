@@ -1,4 +1,3 @@
-
 import Ember from 'ember';
 
 export default Ember.Component.extend({
@@ -10,10 +9,36 @@ export default Ember.Component.extend({
   isOpen: false,
 
 
-  setup: function() {
+  hammer: null, 
+
+
+  _setupCoordinates: function() {
     this.get('revealClip');
     this.get('startDelatX');
   }.on('init'),
+
+  _setupHammer: function() {
+    var hammer = new Hammer(this.get('element'), {});
+
+    hammer.on('panStart', this.panStart);
+    hammer.on('panLeft', this.panLeft);
+    hammer.on('panRight', this.panRight);
+    hammer.on('panEnd', this.panEnd);
+
+    this.set('hammer', hammer);
+  }.on('didInsertElement'),
+
+  _teardownHammer: function () {
+    var hammer = this.get('hammer');
+
+    // element = Ember.$(this.get('rootElement'))[0];
+    if (hammer) {
+      hammer.destroy();
+    }
+
+    this.set('hammer', null);
+    //PreventGhostClicks.remove(element);
+  }.on('willDestroyElement'),
 
 
   startX: function() {
@@ -29,27 +54,27 @@ export default Ember.Component.extend({
   },
 
   panLeft: function(ev) {
-    var deltaX = this.get('startX') + ev.originalEvent.gesture.deltaX;
+    // var deltaX = this.get('startX') + ev.originalEvent.gesture.deltaX;
     console.log("panLeft:", deltaX, ', element:', this.get('elementId'));
-    this.animateHorizontalPan(deltaX);
+    // this.animateHorizontalPan(deltaX);
   },
 
   panRight: function(ev) {
-    var deltaX = this.get('startX') + ev.originalEvent.gesture.deltaX;
+    // var deltaX = this.get('startX') + ev.originalEvent.gesture.deltaX;
     console.log("panRight:", deltaX, ', element:', this.get('elementId'));
-    this.animateHorizontalPan(deltaX);
+    // this.animateHorizontalPan(deltaX);
   },
 
   panEnd: function(ev) {
     console.log('panEnd', ', element:', this.get('elementId'));
 
-    if (Math.abs(this.get('lastDeltaX')) <= this.get('revealClip')) {
-      this.set('isOpen', false);
-    } else {
-      this.set('isOpen', true);
-    }
+    // if (Math.abs(this.get('lastDeltaX')) <= this.get('revealClip')) {
+    //   this.set('isOpen', false);
+    // } else {
+    //   this.set('isOpen', true);
+    // }
 
-    this.animateHorizontalSlide();
+    // this.animateHorizontalSlide();
   },
 
 
