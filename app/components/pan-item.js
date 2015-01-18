@@ -20,10 +20,12 @@ export default Ember.Component.extend({
   _setupHammer: function() {
     var hammer = new Hammer(this.get('element'), {});
 
-    hammer.on('panStart', this.panStart);
+    hammer.on('tap', this.tapped);
     hammer.on('panLeft', this.panLeft);
     hammer.on('panRight', this.panRight);
     hammer.on('panEnd', this.panEnd);
+
+    hammer.on("pan", this.handlePan);
 
     this.set('hammer', hammer);
   }.on('didInsertElement'),
@@ -40,6 +42,9 @@ export default Ember.Component.extend({
     //PreventGhostClicks.remove(element);
   }.on('willDestroyElement'),
 
+  tapped: function() {
+    console.log("TAPPED OUT, MY MAN!!!");
+  },
 
   startX: function() {
     return this.get('isOpen') ? -1 * this.get('revealWidth') : 0; 
@@ -48,6 +53,12 @@ export default Ember.Component.extend({
   revealClip: function() {
     return Math.round((this.get('revealWidth') / 2),0);  
   }.property('revealWidth'),
+
+
+  handlePan: function(ev) {
+    console.log('handlePan: ', ev);    
+  },
+
 
   panStart: function(ev) {
     console.log('panStart!, element:', this.get('elementId'));    
