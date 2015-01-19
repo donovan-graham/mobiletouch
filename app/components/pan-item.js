@@ -5,6 +5,7 @@ export default Ember.Component.extend({
 
   revealWidth: 200, 
   lastDeltaX: 0,
+  startX: null,
 
   isOpen: false,
   hammer: null, 
@@ -18,64 +19,80 @@ export default Ember.Component.extend({
   _setupHammer: function() {
 
     var _this = this,
-        hammer = Hammer(_this.get('element'), {});
+        hammer = new Hammer(_this.get('element'));
 
     hammer.get('pan').set({
       direction: Hammer.DIRECTION_HORIZONTAL,
       threshold: 10
     });
-
     
     var self = this;
     
     hammer.on('panleft', function (ev) {
       var output = self.panLeft.apply(self, Array.prototype.slice.call(arguments));
-      // if (output === false) {
-      //   if (typeof event.stopPropagation !== 'undefined') {
-      //     event.stopPropagation();
-      //   } else {
-      //     event.srcEvent.stopPropagation();
-      //   }
-      // }
+      if (output === false) {
+        if (typeof event.stopPropagation !== 'undefined') {
+          event.stopPropagation();
+        } else {
+          event.srcEvent.stopPropagation();
+        }
+      }
       return output;
     });
 
 
+    
+    hammer.on('panright', function (ev) {
+      var output = self.panRight.apply(self, Array.prototype.slice.call(arguments));
+      if (output === false) {
+        if (typeof event.stopPropagation !== 'undefined') {
+          event.stopPropagation();
+        } else {
+          event.srcEvent.stopPropagation();
+        }
+      }
+      return output;
+    });
 
 
+    hammer.on('panend', function (ev) {
+      var output = self.panEnd.apply(self, Array.prototype.slice.call(arguments));
+      if (output === false) {
+        if (typeof event.stopPropagation !== 'undefined') {
+          event.stopPropagation();
+        } else {
+          event.srcEvent.stopPropagation();
+        }
+      }
+      return output;
+    });
 
-    hammer.on('tap', _this.tapped);
-    hammer.on('panleft', _this.panLeft);
-    hammer.on('panright', _this.panRight);
-    hammer.on('panend', _this.panEnd);
+
+    // hammer.on('tap', _this.tapped);
+    // hammer.on('panstart', _this.panStart);
+    // hammer.on('panleft', _this.panLeft);
+    // hammer.on('panright', _this.panRight);
+    // hammer.on('panend', _this.panEnd);
     
     this.set('hammer', hammer);
 
-  }.on('didInsertElement'),
+  }.on('willInsertElement'),
 
   _teardownHammer: function () {
     var hammer = this.get('hammer');
 
-    // element = Ember.$(this.get('rootElement'))[0];
     if (hammer) {
       hammer.destroy();
     }
 
     this.set('hammer', null);
     // PreventGhostClicks.remove(element);
-
-    // willDestroy
   }.on('willDestroyElement'),
 
-  tapped: function() {
-    console.log("TAPPED OUT, MY MAN!!!");
-  },
 
-
-
-  startX: function() {
-    return this.get('isOpen') ? -1 * this.get('revealWidth') : 0; 
-  }.property('isOpen', 'revealWidth'),
+  // startX: function() {
+  //   return this.get('isOpen') ? -1 * this.get('revealWidth') : 0; 
+  // }.property('isOpen', 'revealWidth'),
 
   revealClip: function() {
     return Math.round((this.get('revealWidth') / 2),0);  
@@ -83,40 +100,35 @@ export default Ember.Component.extend({
 
 
   panLeft: function(ev) {
-    // debugger;
-    // if (!this.get('_startX')) {
-    //   this.set('_startX', this.$()[0].position().left)
-    // }
-    // debugger;
-    // var deltaX = this.get('startX') + ev.originalEvent.gesture.deltaX;
-    var deltaX = ev.deltaX;
-    console.log("panLeft:", deltaX);
-    // this.animateHorizontalPan(deltaX);
+
+    if (this.startX === null || this.startX === undefined) { 
+      this.startX = this.$().position().left; 
+    }
+
+    // console.log("panLeft:", ev.deltaX, " startX:", this.startX);
+    this.animateHorizontalPan(this.startX + ev.deltaX);
   },
 
   panRight: function(ev) {
-    // var deltaX = this.get('startX') + ev.originalEvent.gesture.deltaX;
-    var deltaX = ev.deltaX;
-    console.log("panRight:", deltaX);
-    // this.animateHorizontalPan(deltaX);
+    if (this.startX === null || this.startX === undefined) { 
+      this.startX = this.$().position().left; 
+    }
+
+    // console.log("panRight:", ev.deltaX, " el:", this.get('startX'));
+    this.animateHorizontalPan(this.startX + ev.deltaX);
   },
 
   panEnd: function(ev) {
-    console.log('panEnd');
-
-    // if (Math.abs(this.get('lastDeltaX')) <= this.get('revealClip')) {
-    //   this.set('isOpen', false);
-    // } else {
-    //   this.set('isOpen', true);
-    // }
-
-    // this.animateHorizontalSlide();
+    this.startX = null; 
+    // console.log('panEnd');
   },
 
 
   animateHorizontalPan: function(deltaX) {
     deltaX = Math.min(Math.max(deltaX, -1 * this.get('revealWidth')), 0);
-    this.set('lastDeltaX', deltaX);
+
+    this.lastDeltaX = deltaX;
+    // this.set('lastDeltaX', deltaX);
 
     var style = [];
 
