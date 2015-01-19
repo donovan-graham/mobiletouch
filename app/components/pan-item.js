@@ -153,7 +153,10 @@ export default Ember.Component.extend({
   animateHorizontalSlide: function() {
 
     var xPos,
-        speed = 100,
+        speed,
+        distance,
+        duration,
+        time = 100,
         animation = 'ease',
         transitionNone = '-webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none; transition: none;',
         transition = '-webkit-transition: -webkit-transform %@1; -moz-transition: -moz-transform %@1; -ms-transition: -ms-transform %@1; -o-transition: -o-transform %@1; transition: transform %@1;',
@@ -161,17 +164,25 @@ export default Ember.Component.extend({
 
     xPos = (this.get('isOpen')) ? -1 * this.get('revealWidth') : 0;
 
-    this.$().attr("style", [transition.fmt(speed +'ms '+ animation), transform.fmt(xPos)].join(" "));
+    // speed = this.get('revealClip') / time; // pixels per millisecond
+    // distance = Math.abs(xPos - this.lastX);
+    // duration = distance / speed;
+    // console.log("lastX: ", this.lastX, ", xPos:", xPos , " newTime:", newTime);
+
+    // calculate the remaining time needed to complete the action
+    duration =  Math.abs(xPos - this.lastX) / (this.get('revealClip') / time);
+
+    this.$().attr("style", [transition.fmt(duration +'ms '+ animation), transform.fmt(xPos)].join(" "));
 
 
     if (!this.get('isOpen')) {
       Ember.run.later(this, function() {
         this.$().attr("style", "");
-      }, speed + 1);
+      }, duration + 1);
     } else {
       Ember.run.later(this, function() {
         this.$().attr("style", [transitionNone, transform.fmt(xPos)].join(" "));
-      }, speed + 1);
+      }, duration + 1);
     }
   }
 
