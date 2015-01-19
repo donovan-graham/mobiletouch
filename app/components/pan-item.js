@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   classNames: ['list-item-content'],
 
   revealWidth: 200, 
-  lastDeltaX: 0,
+  lastX: 0,
   startX: null,
 
   isOpen: false,
@@ -119,87 +119,88 @@ export default Ember.Component.extend({
   },
 
   panEnd: function(ev) {
+
+    var absX = Math.abs(this.lastX);
+
+    if (absX === this.get('revealWidth') || absX === 0) { return; }
+
+    if (absX >= this.get('revealClip')) {
+      this.animateHorizontalSlide(-1 * this.get('revealWidth'));
+    } else {
+      this.animateHorizontalSlide(0);
+    }
+
     this.startX = null; 
-    // console.log('panEnd');
   },
 
 
-  animateHorizontalPan: function(deltaX) {
-    deltaX = Math.min(Math.max(deltaX, -1 * this.get('revealWidth')), 0);
+  animateHorizontalPan: function(xPos) {
+    xPos = Math.min(Math.max(xPos, -1 * this.get('revealWidth')), 0);
 
-    this.lastDeltaX = deltaX;
-    // this.set('lastDeltaX', deltaX);
+    this.lastX = xPos;
 
     var style = [];
 
-    style.push('-webkit-transition: none');
-    style.push('-moz-transition: none');
-    style.push('-ms-transition: none');
-    style.push('-o-transition: none');
-    style.push('transition: none');
+    var transition = '-webkit-transition: %@; -moz-transition: %@; -ms-transition: %@; -o-transition: %@; transition: %@;',
+        transform =  '-webkit-transform: translate3d(%@px,0px,0px) scale3d(1,1,1); -moz-transform: translate3d(%@px,0px,0px); -ms-transform: translate3d(%@px,0px,0px); -o-transform: translate3d(%@px,0px,0px); transform: translate3d(%@px,0px,0px);';
 
-    style.push('-webkit-transform: translate3d(' + deltaX + 'px,0px,0px) scale3d(1,1,1)');
-    style.push('-moz-transform: translate3d(' + deltaX + 'px,0px,0px)');
-    style.push('-ms-transform: translate3d(' + deltaX + 'px,0px,0px)');
-    style.push('-o-transform: translate3d(' + deltaX + 'px,0px,0px)');
-    style.push('transform: translate3d(' + deltaX + 'px,0px,0px)');
-
-    this.$().attr("style", style.join("; "));
+    this.$().attr("style", [transition.fmt('none'), transform.fmt(xPos)].join(" "));
 
   },
 
 
-  animateHorizontalSlide: function(deltaX) {
+  animateHorizontalSlide: function(xPos) {
 
-    var x = this.get('startX'),
-        style = [],
-        speed = 100,
-        animation = 'ease';
+    var speed = 100,
+        animation = 'ease',
+        transition = '-webkit-transition: -webkit-transform %@; -moz-transition: -moz-transform %@; -ms-transition: -ms-transform %@; -o-transition: -o-transform %@; transition: transform %@;',
+        transform =  '-webkit-transform: translate3d(%@px,0px,0px) scale3d(1,1,1); -moz-transform: translate3d(%@px,0px,0px); -ms-transform: translate3d(%@px,0px,0px); -o-transform: translate3d(%@px,0px,0px); transform: translate3d(%@px,0px,0px);';
 
-    
-    style.push('-webkit-transition: -webkit-transform '+ speed +'ms '+ animation);
-    style.push('-moz-transition: -moz-transform '+ speed +'ms '+ animation);
-    style.push('-ms-transition: -ms-transform '+ speed +'ms '+ animation);
-    style.push('-o-transition: -o-transform '+ speed +'ms '+ animation);
-    style.push('transition: transform '+ speed +'ms '+ animation);
+    // style.push('-webkit-transition: -webkit-transform '+ speed +'ms '+ animation);
+    // style.push('-moz-transition: -moz-transform '+ speed +'ms '+ animation);
+    // style.push('-ms-transition: -ms-transform '+ speed +'ms '+ animation);
+    // style.push('-o-transition: -o-transform '+ speed +'ms '+ animation);
+    // style.push('transition: transform '+ speed +'ms '+ animation);
 
-    style.push('-webkit-transform: translate3d(' + x + 'px,0px,0px) scale3d(1,1,1)');
-    style.push('-moz-transform: translate3d(' + x + 'px,0px,0px)');
-    style.push('-ms-transform: translate3d(' + x + 'px,0px,0px)');
-    style.push('-o-transform: translate3d(' + x + 'px,0px,0px)');
-    style.push('transform: translate3d(' + x + 'px,0px,0px)');
+    // style.push('-webkit-transform: translate3d(' + x + 'px,0px,0px) scale3d(1,1,1)');
+    // style.push('-moz-transform: translate3d(' + x + 'px,0px,0px)');
+    // style.push('-ms-transform: translate3d(' + x + 'px,0px,0px)');
+    // style.push('-o-transform: translate3d(' + x + 'px,0px,0px)');
+    // style.push('transform: translate3d(' + x + 'px,0px,0px)');
 
-    this.$().attr("style", style.join("; "));
+    this.$().attr("style", [transition.fmt(speed +'ms '+ animation), transform.fmt(xPos)].join(" "));
 
-    if (!this.get('isOpen')) {
 
-      Ember.run.later(this, function() {
-        this.$().attr("style", "");
-      }, speed + 1);
 
-    } else {
+    // if (!this.get('isOpen')) {
 
-      Ember.run.later(this, function() {
+    //   Ember.run.later(this, function() {
+    //     this.$().attr("style", "");
+    //   }, speed + 1);
 
-        var style = [];
+    // } else {
 
-        style.push('-webkit-transition: none');
-        style.push('-moz-transition: none');
-        style.push('-ms-transition: none');
-        style.push('-o-transition: none');
-        style.push('transition: none');
+    //   Ember.run.later(this, function() {
 
-        var currentStyle = this.$()[0].style;
-        style.push('-webkit-transform: ' + currentStyle.webkitTransform || 'translate3d(0px,0px,0px) scale3d(1,1,1)');
-        style.push('-moz-transform: ' + currentStyle.mozTransform || 'translate3d(0px,0px,0px)');
-        style.push('-ms-transform: ' + currentStyle.msTransform || 'translate3d(0px,0px,0px)');
-        style.push('-o-transform: ' + currentStyle.oTransform || 'translate3d(0px,0px,0px)');
-        style.push('transform: ' + currentStyle.transform || 'translate3d(0px,0px,0px)');
+    //     var style = [];
+
+    //     style.push('-webkit-transition: none');
+    //     style.push('-moz-transition: none');
+    //     style.push('-ms-transition: none');
+    //     style.push('-o-transition: none');
+    //     style.push('transition: none');
+
+    //     var currentStyle = this.$()[0].style;
+    //     style.push('-webkit-transform: ' + currentStyle.webkitTransform || 'translate3d(0px,0px,0px) scale3d(1,1,1)');
+    //     style.push('-moz-transform: ' + currentStyle.mozTransform || 'translate3d(0px,0px,0px)');
+    //     style.push('-ms-transform: ' + currentStyle.msTransform || 'translate3d(0px,0px,0px)');
+    //     style.push('-o-transform: ' + currentStyle.oTransform || 'translate3d(0px,0px,0px)');
+    //     style.push('transform: ' + currentStyle.transform || 'translate3d(0px,0px,0px)');
         
-        this.$().attr("style", style.join("; "));
+    //     this.$().attr("style", style.join("; "));
 
-      }, speed + 1);
-    }
+    //   }, speed + 1);
+    // }
   }
 
 
