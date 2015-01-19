@@ -125,11 +125,13 @@ export default Ember.Component.extend({
     if (absX === this.get('revealWidth') || absX === 0) { return; }
 
     if (absX >= this.get('revealClip')) {
-      this.animateHorizontalSlide(-1 * this.get('revealWidth'));
+      this.set('isOpen', true);
+
     } else {
-      this.animateHorizontalSlide(0);
+      this.set('isOpen', false);
     }
 
+    this.animateHorizontalSlide();
     this.startX = null; 
   },
 
@@ -141,69 +143,37 @@ export default Ember.Component.extend({
 
     var style = [];
 
-    var transition = '-webkit-transition: %@; -moz-transition: %@; -ms-transition: %@; -o-transition: %@; transition: %@;',
-        transform =  '-webkit-transform: translate3d(%@px,0px,0px) scale3d(1,1,1); -moz-transform: translate3d(%@px,0px,0px); -ms-transform: translate3d(%@px,0px,0px); -o-transform: translate3d(%@px,0px,0px); transform: translate3d(%@px,0px,0px);';
+    var transitionNone = '-webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none; transition: none;',
+        transform =  '-webkit-transform: translate3d(%@1px,0px,0px) scale3d(1,1,1); -moz-transform: translate3d(%@1px,0px,0px); -ms-transform: translate3d(%@1px,0px,0px); -o-transform: translate3d(%@1px,0px,0px); transform: translate3d(%@1px,0px,0px);';
 
-    this.$().attr("style", [transition.fmt('none'), transform.fmt(xPos)].join(" "));
-
+    this.$().attr("style", [transitionNone, transform.fmt(xPos)].join(" "));
   },
 
 
-  animateHorizontalSlide: function(xPos) {
+  animateHorizontalSlide: function() {
 
-    var speed = 100,
+    var xPos,
+        speed = 100,
         animation = 'ease',
-        transition = '-webkit-transition: -webkit-transform %@; -moz-transition: -moz-transform %@; -ms-transition: -ms-transform %@; -o-transition: -o-transform %@; transition: transform %@;',
-        transform =  '-webkit-transform: translate3d(%@px,0px,0px) scale3d(1,1,1); -moz-transform: translate3d(%@px,0px,0px); -ms-transform: translate3d(%@px,0px,0px); -o-transform: translate3d(%@px,0px,0px); transform: translate3d(%@px,0px,0px);';
+        transitionNone = '-webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none; transition: none;',
+        transition = '-webkit-transition: -webkit-transform %@1; -moz-transition: -moz-transform %@1; -ms-transition: -ms-transform %@1; -o-transition: -o-transform %@1; transition: transform %@1;',
+        transform =  '-webkit-transform: translate3d(%@1px,0px,0px) scale3d(1,1,1); -moz-transform: translate3d(%@1px,0px,0px); -ms-transform: translate3d(%@1px,0px,0px); -o-transform: translate3d(%@1px,0px,0px); transform: translate3d(%@1px,0px,0px);';
 
-    // style.push('-webkit-transition: -webkit-transform '+ speed +'ms '+ animation);
-    // style.push('-moz-transition: -moz-transform '+ speed +'ms '+ animation);
-    // style.push('-ms-transition: -ms-transform '+ speed +'ms '+ animation);
-    // style.push('-o-transition: -o-transform '+ speed +'ms '+ animation);
-    // style.push('transition: transform '+ speed +'ms '+ animation);
-
-    // style.push('-webkit-transform: translate3d(' + x + 'px,0px,0px) scale3d(1,1,1)');
-    // style.push('-moz-transform: translate3d(' + x + 'px,0px,0px)');
-    // style.push('-ms-transform: translate3d(' + x + 'px,0px,0px)');
-    // style.push('-o-transform: translate3d(' + x + 'px,0px,0px)');
-    // style.push('transform: translate3d(' + x + 'px,0px,0px)');
+    xPos = (this.get('isOpen')) ? -1 * this.get('revealWidth') : 0;
 
     this.$().attr("style", [transition.fmt(speed +'ms '+ animation), transform.fmt(xPos)].join(" "));
 
 
-
-    // if (!this.get('isOpen')) {
-
-    //   Ember.run.later(this, function() {
-    //     this.$().attr("style", "");
-    //   }, speed + 1);
-
-    // } else {
-
-    //   Ember.run.later(this, function() {
-
-    //     var style = [];
-
-    //     style.push('-webkit-transition: none');
-    //     style.push('-moz-transition: none');
-    //     style.push('-ms-transition: none');
-    //     style.push('-o-transition: none');
-    //     style.push('transition: none');
-
-    //     var currentStyle = this.$()[0].style;
-    //     style.push('-webkit-transform: ' + currentStyle.webkitTransform || 'translate3d(0px,0px,0px) scale3d(1,1,1)');
-    //     style.push('-moz-transform: ' + currentStyle.mozTransform || 'translate3d(0px,0px,0px)');
-    //     style.push('-ms-transform: ' + currentStyle.msTransform || 'translate3d(0px,0px,0px)');
-    //     style.push('-o-transform: ' + currentStyle.oTransform || 'translate3d(0px,0px,0px)');
-    //     style.push('transform: ' + currentStyle.transform || 'translate3d(0px,0px,0px)');
-        
-    //     this.$().attr("style", style.join("; "));
-
-    //   }, speed + 1);
-    // }
+    if (!this.get('isOpen')) {
+      Ember.run.later(this, function() {
+        this.$().attr("style", "");
+      }, speed + 1);
+    } else {
+      Ember.run.later(this, function() {
+        this.$().attr("style", [transitionNone, transform.fmt(xPos)].join(" "));
+      }, speed + 1);
+    }
   }
-
-
 
 
 });
