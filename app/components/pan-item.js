@@ -25,6 +25,25 @@ export default Ember.Component.extend({
       threshold: 10
     });
 
+    
+    var self = this;
+    
+    hammer.on('panleft', function (ev) {
+      var output = self.panLeft.apply(self, Array.prototype.slice.call(arguments));
+      // if (output === false) {
+      //   if (typeof event.stopPropagation !== 'undefined') {
+      //     event.stopPropagation();
+      //   } else {
+      //     event.srcEvent.stopPropagation();
+      //   }
+      // }
+      return output;
+    });
+
+
+
+
+
     hammer.on('tap', _this.tapped);
     hammer.on('panleft', _this.panLeft);
     hammer.on('panright', _this.panRight);
