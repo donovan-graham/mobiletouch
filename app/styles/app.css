@@ -21,7 +21,20 @@ html, body {
   height: 100%; 
   padding: 0 10px; 
   background-color: lightblue; 
-  ztransform: translate3d(-200px,0,0);
+
+  /*
+  -webkit-transform: translate3d(0px,0px,0px) scale3d(1,1,1);
+  -moz-transform: translate3d(0px,0px,0px);
+  -ms-transform: translate3d(0px,0px,0px);
+  -o-transform: translate3d(0px,0px,0px);
+  transform: translate3d(0px,0px,0px);
+
+  -webkit-transition: none; 
+  -moz-transition: none; 
+  -ms-transition: none; 
+  -o-transition: none; 
+  transition: none;
+  */
 } 
 
 .list-item-option {
