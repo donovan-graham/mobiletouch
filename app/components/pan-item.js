@@ -13,12 +13,6 @@ export default Ember.Component.extend({
   isOpen: false,
   hammer: null, 
 
-  transitionNone: '-webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none; transition: none;',
-  transitionAnimate: '-webkit-transition: -webkit-transform %@1; -moz-transition: -moz-transform %@1; -ms-transition: -ms-transform %@1; -o-transition: -o-transform %@1; transition: transform %@1;',
-  transformX: '-webkit-transform: translate3d(%@1px,0px,0px) scale3d(1,1,1); -moz-transform: translate3d(%@1px,0px,0px); -ms-transform: translate3d(%@1px,0px,0px); -o-transform: translate3d(%@1px,0px,0px); transform: translate3d(%@1px,0px,0px);',
-
-
-
   _setupCoordinates: function() {
     this.get('revealClip');
     this.get('startDelatX');
@@ -151,8 +145,8 @@ export default Ember.Component.extend({
  
     this.lastX = xPos;
 
-    // Test 1
     var style = '';
+
     style += '-webkit-transition: none; ';
     style += '-moz-transition: none; ';
     style += '-ms-transition: none; ';
@@ -166,61 +160,6 @@ export default Ember.Component.extend({
     style += 'transform: translate3d(' + xPos + 'px,0px,0px); ';
 
     this.$()[0].style.cssText = style;
-    return;
-
-
-    /*    
-    // Test 1
-    var style = [];
- 
-    style.push('-webkit-transition: none');
-    style.push('-moz-transition: none');
-    style.push('-ms-transition: none');
-    style.push('-o-transition: none');
-    style.push('transition: none');
-     
-    style.push('-webkit-transform: translate3d(' + xPos + 'px,0px,0px) scale3d(1,1,1)');
-    style.push('-moz-transform: translate3d(' + xPos + 'px,0px,0px)');
-    style.push('-ms-transform: translate3d(' + xPos + 'px,0px,0px)');
-    style.push('-o-transform: translate3d(' + xPos + 'px,0px,0px)');
-    style.push('transform: translate3d(' + xPos + 'px,0px,0px)');
- 
-    this.$().attr("style", style.join("; "));
-    return;
-    /*
-    */
-
-    /*
-    // Test 2
-    var style = this.$()[0].style;   
-    style.webkitTransition = 'none';
-    style.mozTransition = 'none';
-    style.msTransition = 'none';
-    style.oTransition = 'none';
-    style.transition = 'none';
-    style.webkitTransform = 'translate3d(' + xPos + 'px,0px,0px) scale3d(1,1,1)';
-    style.mozTransform = 'translate3d(' + xPos + 'px,0px,0px)';
-    style.msTransform = 'translate3d(' + xPos + 'px,0px,0px)';
-    style.oTransform = 'translate3d(' + xPos + 'px,0px,0px)';
-    style.transform = 'translate3d(' + xPos + 'px,0px,0px)';
-    
-    this.$()[0].style = style;
-    return;
-    */
-
-    
-    /*
-    // Test 3
-    var transitionNone = '-webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none; transition: none;',
-        transform =  '-webkit-transform: translate3d(%@1px,0px,0px) scale3d(1,1,1); -moz-transform: translate3d(%@1px,0px,0px); -ms-transform: translate3d(%@1px,0px,0px); -o-transform: translate3d(%@1px,0px,0px); transform: translate3d(%@1px,0px,0px);';
-    this.$().attr("style", [transitionNone, transform.fmt(xPos)].join(" "));
-    */
-
-    /*
-    // Test 4
-    this.$()[0].style.cssText = [this.transitionNone, this.transformX.fmt(xPos)].join(" ");
-    return;
-    */
   },
 
 
@@ -246,9 +185,8 @@ export default Ember.Component.extend({
     relativeDuration =  Math.abs(xPos - this.lastX) / (this.get('revealClip') / this.get('duration'));
 
 
-    // Test 0
     var style = '';   
-    
+   
     style += '-webkit-transition: -webkit-transform ' + relativeDuration + 'ms ' + animation + '; ';
     style += '-moz-transition: -moz-transform ' + relativeDuration + 'ms ' + animation + '; ';
     style += '-ms-transition: -ms-transform ' + relativeDuration + 'ms ' + animation + '; ';
@@ -262,45 +200,6 @@ export default Ember.Component.extend({
     style += 'transform: translate3d(' + xPos + 'px,0px,0px); ';
 
     this.$()[0].style.cssText = style;
-    return;
-
-    /*
-    // Test 1
-    var style = this.$()[0].style;   
-    style.webkitTransition = 'transform ' + relativeDuration + 'ms ' + animation;
-    style.mozTransition = 'transform ' + relativeDuration + 'ms ' + animation;
-    style.msTransition = 'transform ' + relativeDuration + 'ms ' + animation;
-    style.oTransition = 'transform ' + relativeDuration + 'ms ' + animation;
-    style.transition = 'transform ' + relativeDuration + 'ms ' + animation;
-    style.webkitTransform = 'translate3d(' + xPos + 'px,0px,0px) scale3d(1,1,1)';
-    style.mozTransform = 'translate3d(' + xPos + 'px,0px,0px)';
-    style.msTransform = 'translate3d(' + xPos + 'px,0px,0px)';
-    style.oTransform = 'translate3d(' + xPos + 'px,0px,0px)';
-    style.transform = 'translate3d(' + xPos + 'px,0px,0px)';
-    this.$()[0].style = style;
-    */
-
-    /*
-    // Test 2
-
-    var transitionNone = '-webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none; transition: none;',
-        transitionAnimate = '-webkit-transition: -webkit-transform %@1; -moz-transition: -moz-transform %@1; -ms-transition: -ms-transform %@1; -o-transition: -o-transform %@1; transition: transform %@1;',
-        transformX =  '-webkit-transform: translate3d(%@1px,0px,0px) scale3d(1,1,1); -moz-transform: translate3d(%@1px,0px,0px); -ms-transform: translate3d(%@1px,0px,0px); -o-transform: translate3d(%@1px,0px,0px); transform: translate3d(%@1px,0px,0px);';
-
-    this.$().attr("style", [transition.fmt(relativeDuration +'ms '+ animation), transform.fmt(xPos)].join(" "));
-    return;
-    */
-
-    /*
-    // Test 3
-    this.$()[0].style.cssText = [this.transitionAnimate.fmt(relativeDuration +'ms '+ animation), this.transformX.fmt(xPos)].join(" ");
-    */
-
-
-    // Ember.run.later(this, function() {
-    //   this.$().attr("style", [transitionNone, transform.fmt(xPos)].join(" "));
-    // }, relativeDuration + 1);
-    
   }
 
 
