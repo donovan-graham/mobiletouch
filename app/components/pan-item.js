@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   classNames: ['list-item-content'],
+  // classNameBindings: ['isOpen:open'],
 
   revealWidth: 200, // pixels
   duration: 200, // milli-seconds
@@ -143,13 +144,32 @@ export default Ember.Component.extend({
 
 
   animateHorizontalPan: function(xPos) {
+    
     xPos = Math.min(Math.max(xPos, -1 * this.get('revealWidth')), 0);
- 
+
     if (this.lastX === xPos) { return; }  // don't need to make any new changes
  
     this.lastX = xPos;
 
-    /*
+    // Test 1
+    var style = '';
+    style += '-webkit-transition: none; ';
+    style += '-moz-transition: none; ';
+    style += '-ms-transition: none; ';
+    style += '-o-transition: none; ';
+    style += 'transition: none; ';
+
+    style += '-webkit-transform: translate3d(' + xPos + 'px,0px,0px) scale3d(1,1,1); ';
+    style += '-moz-transform: translate3d(' + xPos + 'px,0px,0px); ';
+    style += '-ms-transform: translate3d(' + xPos + 'px,0px,0px); ';
+    style += '-o-transform: translate3d(' + xPos + 'px,0px,0px); ';
+    style += 'transform: translate3d(' + xPos + 'px,0px,0px); ';
+
+    this.$()[0].style.cssText = style;
+    return;
+
+
+    /*    
     // Test 1
     var style = [];
  
@@ -167,6 +187,7 @@ export default Ember.Component.extend({
  
     this.$().attr("style", style.join("; "));
     return;
+    /*
     */
 
     /*
@@ -195,9 +216,11 @@ export default Ember.Component.extend({
     this.$().attr("style", [transitionNone, transform.fmt(xPos)].join(" "));
     */
 
-     // Test 4
+    /*
+    // Test 4
     this.$()[0].style.cssText = [this.transitionNone, this.transformX.fmt(xPos)].join(" ");
     return;
+    */
   },
 
 
@@ -209,9 +232,9 @@ export default Ember.Component.extend({
 
     xPos = (this.get('isOpen')) ? -1 * this.get('revealWidth') : 0;
 
-    xPos = Math.min(Math.max(xPos, -1 * this.get('revealWidth')), 0);
+    // xPos = Math.min(Math.max(xPos, -1 * this.get('revealWidth')), 0);
  
-    if (this.lastX === xPos) { return; }  // don't need to make any new changes
+    // if (this.lastX === xPos) { return; }  // don't need to make any new changes
  
 
     // var speed = this.get('revealClip') / this.get('duration'); // pixels per millisecond
@@ -222,6 +245,24 @@ export default Ember.Component.extend({
     // calculate the remaining duration (time) needed to complete the action
     relativeDuration =  Math.abs(xPos - this.lastX) / (this.get('revealClip') / this.get('duration'));
 
+
+    // Test 0
+    var style = '';   
+    
+    style += '-webkit-transition: -webkit-transform ' + relativeDuration + 'ms ' + animation + '; ';
+    style += '-moz-transition: -moz-transform ' + relativeDuration + 'ms ' + animation + '; ';
+    style += '-ms-transition: -ms-transform ' + relativeDuration + 'ms ' + animation + '; ';
+    style += '-o-transition: -o-transform ' + relativeDuration + 'ms ' + animation + '; ';
+    style += 'transition: transform ' + relativeDuration + 'ms ' + animation + '; ';
+
+    style += '-webkit-transform: translate3d(' + xPos + 'px,0px,0px) scale3d(1,1,1); ';
+    style += '-moz-transform: translate3d(' + xPos + 'px,0px,0px); ';
+    style += '-ms-transform: translate3d(' + xPos + 'px,0px,0px); ';
+    style += '-o-transform: translate3d(' + xPos + 'px,0px,0px); ';
+    style += 'transform: translate3d(' + xPos + 'px,0px,0px); ';
+
+    this.$()[0].style.cssText = style;
+    return;
 
     /*
     // Test 1
@@ -250,9 +291,12 @@ export default Ember.Component.extend({
     return;
     */
 
+    /*
     // Test 3
     this.$()[0].style.cssText = [this.transitionAnimate.fmt(relativeDuration +'ms '+ animation), this.transformX.fmt(xPos)].join(" ");
- 
+    */
+
+
     // Ember.run.later(this, function() {
     //   this.$().attr("style", [transitionNone, transform.fmt(xPos)].join(" "));
     // }, relativeDuration + 1);
