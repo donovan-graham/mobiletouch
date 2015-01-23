@@ -1,6 +1,47 @@
 html, body {
-  margin: 20px;
+  margin: 0px;
+  padding: 0px;
 }
+
+body {
+  position: relative;
+  /*  transform: translate3d(0px,0px,0px); */
+}
+
+#app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  z-index: 2;
+
+  height: 50px;
+  background: darkblue;
+  color: white;
+  text-align: center;
+}
+
+
+#app-menu {
+  background: geren;
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  width: 100%;
+  z-index: 2;
+  overflow: hidden;
+
+  padding-right:40px;
+}
+
+
+#app-content {
+  margin: 70px 20px 20px;
+}
+
 
 .list-container {
   margin: 40px 0;
@@ -21,6 +62,7 @@ html, body {
   height: 100%; 
   padding: 0 10px; 
   background-color: lightblue; 
+  border-right: 1px solid #999;
 
   -webkit-transform: translate3d(0px,0px,0px) scale3d(1,1,1);
   -moz-transform: translate3d(0px,0px,0px);

@@ -1,7 +1,23 @@
 <h2 id="title">Welcome to Ember.js</h2>
 
-<fast-draw bgcolor="red">
-  Boom Byatches
-</fast-draw>
 
-{{outlet}}
+<header id="app-header">
+  <side-menu-button id="app-menu-button" action="toggleSideMenu">
+    +++
+  </side-menu-button>
+  <h1 id="app-title">Mobile Patterns</h1>
+</header>
+
+<side-menu id="app-menu" progress={{sideMenuProgress}}>
+  <ul>
+    <li>One</li>
+    <li>Two</li>
+    <li>Three</li>
+  </ul>
+</side-menu>
+
+
+<div id="app-content">
+
+  {{outlet}}
+</div>
