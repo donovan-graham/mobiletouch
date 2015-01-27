@@ -4,148 +4,107 @@ export default Ember.Component.extend({
   classNames: ['list-item-content'],
   // classNameBindings: ['isOpen:open'],
 
-  revealWidth: 200, // pixels
+  width: 200, // pixels
   duration: 200, // milli-seconds
 
   lastX: 0,
   startX: null,
 
+  rafPanId: null,
+  rafSlideId: null,
+
+
   isOpen: false,
   hammer: null, 
 
-  _setupCoordinates: function() {
-    this.get('revealClip');
-    this.get('startDelatX');
-  }.on('init'),
+
+  clip: function() {
+    return Math.round((this.get('width') / 2), 0);  
+  }.property('width').cacheable(),
+
 
   _setupHammer: function() {
 
-    var _this = this,
-        hammer = new Hammer(_this.get('element'));
+    var hammer = new Hammer(this.get('element'));
 
     hammer.get('pan').set({
       direction: Hammer.DIRECTION_HORIZONTAL,
       threshold: 10
     });
     
-    var self = this;
-    
-    hammer.on('panleft panright', function (ev) {
-      var output = self.panHorizontal.apply(self, Array.prototype.slice.call(arguments));
-      if (output === false) {
-        if (typeof event.stopPropagation !== 'undefined') {
-          event.stopPropagation();
-        } else {
-          event.srcEvent.stopPropagation();
-        }
-      }
-      return output;
-    });
-
-    // hammer.on('panright', function (ev) {
-    //   var output = self.panRight.apply(self, Array.prototype.slice.call(arguments));
-    //   if (output === false) {
-    //     if (typeof event.stopPropagation !== 'undefined') {
-    //       event.stopPropagation();
-    //     } else {
-    //       event.srcEvent.stopPropagation();
-    //     }
-    //   }
-    //   return output;
-    // });
-
-
-    hammer.on('panend', function (ev) {
-      var output = self.panEnd.apply(self, Array.prototype.slice.call(arguments));
-      if (output === false) {
-        if (typeof event.stopPropagation !== 'undefined') {
-          event.stopPropagation();
-        } else {
-          event.srcEvent.stopPropagation();
-        }
-      }
-      return output;
-    });
-
-
-    // hammer.on('tap', _this.tapped);
-    // hammer.on('panstart', _this.panStart);
-    // hammer.on('panleft', _this.panLeft);
-    // hammer.on('panright', _this.panRight);
-    // hammer.on('panend', _this.panEnd);
-    
+    // hammer.on('panstart', this.panStart.bind(this));
+    hammer.on('panleft panright', this.panHorizontal.bind(this));
+    hammer.on('panend', this.panEnd.bind(this));
+ 
     this.set('hammer', hammer);
-
+    // PreventGhostClicks.add(element);
   }.on('willInsertElement'),
+
 
   _teardownHammer: function () {
     var hammer = this.get('hammer');
 
     if (hammer) {
       hammer.destroy();
+      this.set('hammer', null);
     }
 
-    this.set('hammer', null);
     // PreventGhostClicks.remove(element);
   }.on('willDestroyElement'),
 
-  revealClip: function() {
-    return Math.round((this.get('revealWidth') / 2), 0);  
-  }.property('revealWidth'),
-
-
-  // panLeft: function(ev) {
-  //   this.panStart(); 
-  //   this.animateHorizontalPan(this.startX + ev.deltaX);
-  // },
-
-  // panRight: function(ev) {
-  //   this.panStart(); 
-  //   this.animateHorizontalPan(this.startX + ev.deltaX);
-  // },
-
 
   panStart: function() {
-    if (this.startX === null || this.startX === undefined) { 
-      this.startX = this.$().position().left; 
+    if (Ember.isEmpty(this.startX)) {
+      this.startX = this.$().position().left;       
     }
   },
 
-  panHorizontal: function(ev) {
-    /* 
-    hammer2 fires panStart only after the first panLeft panRight.  
-    So we need to manage the pan start manually. 
-    */
+
+  panHorizontal: function(event) {
     this.panStart(); 
-    this.animateHorizontalPan(this.startX + ev.deltaX);
+
+    var newX = this.startX + event.deltaX;
+    newX = Math.min(Math.max(newX, -1 * this.get('width')), 0);
+
+    if (this.lastX === newX) { return; }
+
+    this.lastX = newX;
+
+    if (!this.rafPanId) {
+      if (this.rafSlideId) {
+        window.cancelAnimationFrame(this.rafSlideId);
+        this.rafSlideId = null;
+      }
+      this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
+    }  
   },
 
 
-  panEnd: function(ev) {
-    var absX = Math.abs(this.lastX);
+  panEnd: function() {
     this.startX = null; 
 
-    if (absX >= this.get('revealClip')) {
-       this.set('isOpen', true);
-    } else {
-      this.set('isOpen', false);
+    var absX = Math.abs(this.lastX);
+
+    this.set('isOpen', (absX >= this.get('clip')));
+
+    if (absX === this.get('width') || absX === 0) { return; }
+
+    if (!this.rafSlideId) {
+      if (this.rafPanId) {
+        window.cancelAnimationFrame(this.rafPanId);
+        this.rafPanId = null;
+      }
+      this.rafSlideId = window.requestAnimationFrame(this.animateHorizontalSlide.bind(this));
     }
-
-    if (absX === this.get('revealWidth') || absX === 0) { return; }
-
-    this.animateHorizontalSlide();
   },
 
 
-  animateHorizontalPan: function(xPos) {
-    
-    xPos = Math.min(Math.max(xPos, -1 * this.get('revealWidth')), 0);
+  animateHorizontalPan: function() {
 
-    if (this.lastX === xPos) { return; }  // don't need to make any new changes
- 
-    this.lastX = xPos;
+    this.rafPanId = null;      // release the lock
 
-    var style = '';
+    var xPos = this.lastX,
+        style = '';
 
     style += '-webkit-transition: none; ';
     style += '-moz-transition: none; ';
@@ -165,24 +124,16 @@ export default Ember.Component.extend({
 
   animateHorizontalSlide: function() {
 
-     var xPos,
+    this.rafSlideId = null;      // release the lock
+
+    var xPos,
         relativeDuration,
         animation = 'ease-out';
 
-    xPos = (this.get('isOpen')) ? -1 * this.get('revealWidth') : 0;
-
-    // xPos = Math.min(Math.max(xPos, -1 * this.get('revealWidth')), 0);
- 
-    // if (this.lastX === xPos) { return; }  // don't need to make any new changes
- 
-
-    // var speed = this.get('revealClip') / this.get('duration'); // pixels per millisecond
-    // var distance = Math.abs(xPos - this.lastX);
-    // var duration = distance / speed;
-    // console.log("lastX: ", this.lastX, ", xPos:", xPos , " duration:", v);
+    xPos = (this.get('isOpen')) ? -1 * this.get('width') : 0;
 
     // calculate the remaining duration (time) needed to complete the action
-    relativeDuration =  Math.abs(xPos - this.lastX) / (this.get('revealClip') / this.get('duration'));
+    relativeDuration =  Math.abs(xPos - this.lastX) / (this.get('clip') / this.get('duration'));
 
 
     var style = '';   

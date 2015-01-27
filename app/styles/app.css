@@ -5,7 +5,6 @@ html, body {
 
 body {
   position: relative;
-  /*  transform: translate3d(0px,0px,0px); */
 }
 
 #app-header {
@@ -14,7 +13,7 @@ body {
   left: 0;
   width: 100%;
   overflow: hidden;
-  z-index: 2;
+  z-index: 100;
 
   height: 50px;
   background: darkblue;
@@ -23,23 +22,56 @@ body {
 }
 
 
-#app-menu {
-  background: geren;
-
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 100%;
-  width: 100%;
-  z-index: 2;
-  overflow: hidden;
-
-  padding-right:40px;
-}
-
 
 #app-content {
   margin: 70px 20px 20px;
+}
+
+
+.side-menu {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 100%;
+  width: 200px; /* 240 - 20 - 20 */
+  padding: 20px;
+  z-index: 201;
+
+  /*overflow: hidden;*/
+
+  background-color: green;
+  color: white;
+}
+
+.side-menu-button {
+  position: absolute;
+  top: 0;
+  left: -50px;
+  width: 50px;
+  height: 50px;
+  z-index: 2;
+
+  display: block;
+
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+
+  background-color: green;
+  color: white;
+}
+
+.side-menu-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 200;
+
+  background-color: #333;
+  opacity: 0.8;
+  color: #fff;
 }
 
 

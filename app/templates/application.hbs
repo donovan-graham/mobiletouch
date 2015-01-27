@@ -1,14 +1,6 @@
-<h2 id="title">Welcome to Ember.js</h2>
+<side-menu-overlay progress={{sideMenuProgress}} updateProgress="updateProgress"></side-menu-overlay>
 
-
-<header id="app-header">
-  <side-menu-button id="app-menu-button" action="toggleSideMenu">
-    +++
-  </side-menu-button>
-  <h1 id="app-title">Mobile Patterns</h1>
-</header>
-
-<side-menu id="app-menu" progress={{sideMenuProgress}}>
+<side-menu progress={{sideMenuProgress}} updateProgress="updateProgress">
   <ul>
     <li>One</li>
     <li>Two</li>
@@ -18,6 +10,12 @@
 
 
 <div id="app-content">
+  <h2 id="title">Welcome to Ember.js</h2>
+
+  <header id="app-header">
+    <h1 id="app-title">Mobile Patterns</h1>
+  </header>
+
 
   {{outlet}}
 </div>
