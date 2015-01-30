@@ -6,12 +6,17 @@ module.exports = function(environment) {
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
+    
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
+
+        'ember-htmlbars-component-generation': true,
+        'ember-htmlbars-attribute-syntax': true
       }
     },
+
 
     APP: {
       // Here you can pass flags/options to your application instance

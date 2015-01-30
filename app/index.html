@@ -13,8 +13,10 @@
     <link rel="stylesheet" href="assets/mobiletouch.css">
 
     {{content-for 'head-footer'}}
+
+    <meta name="msapplication-tap-highlight" content="no" />
   </head>
-  <body>
+  <body class="no-select">
     {{content-for 'body'}}
 
     <script src="assets/vendor.js"></script>

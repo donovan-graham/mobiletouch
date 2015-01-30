@@ -13,4 +13,24 @@ var App = Ember.Application.extend({
 
 loadInitializers(App, config.modulePrefix);
 
+
+Ember.EventDispatcher.reopen({
+  events: {
+    keydown     : 'keyDown',
+    keyup       : 'keyUp',
+    keypress    : 'keyPress',
+    contextmenu : 'contextMenu',
+    click       : 'click',
+    dblclick    : 'doubleClick',
+    focusin     : 'focusIn',
+    focusout    : 'focusOut',
+    submit      : 'submit',
+    input       : 'input',
+    change      : 'change',
+  },
+});
+
 export default App;
+
+
+
