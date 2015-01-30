@@ -1,33 +1,24 @@
 import Ember from 'ember';
+import PanElement from '../mixins/pan-element';
 
-export default Ember.Component.extend({
-  classNames: ['side-menu'],
+export default Ember.Component.extend(PanElement, {
+  classNames: ['side-menu', 'no-select'],
+  //classNameBindings: ['isPanOpen:open'],
 
-  /*
-  TODO:
-  Move toggle button + opacity inside the side menu and handle positioning with css.
+  elementId: 'app-side-menu',
 
+  width: 240, // pixels
+  duration: 240, // milli-seconds
 
-  REFERENCE:
-  http://miguelcamba.com/blog/2015/01/01/screencast-create-a-touch-menu-component-in-ember-dot-js/?utm_source=Ember+Weekly&utm_campaign=c98ea83fe1-Ember_Weekly_Issue_91&utm_medium=email&utm_term=0_e96229d21d-c98ea83fe1-106351745
+  panElementId: null,
+  panElementByName: null,
+  panElementTagName: null,
+  panElementCssSelector: null,
 
-  */
-
-  node: null,
-  progress: 0,
-
-  sideMenuWidth: 200, /* px */
-
-  setup: function() {
-    this.node = Ember.$('body')[0];
-  }.on('init'),
-
-  // animateMenu: function() {
-  //   var translate = (this.get('progress') * -1 ) * this.get('sideMenuWidth');
-  //   this.node.style.cssText = 'transform: translate3d(' + translate + 'px,0px,0px);';
-  // }.observes('progress'),
-
-
-  
+  actions: {
+    toggleMenu: function() {
+      console.log('toggleMenu');
+    }
+  }
 
 });
