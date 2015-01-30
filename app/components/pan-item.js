@@ -13,31 +13,36 @@ export default Ember.Component.extend({
   rafPanId: null,
   rafSlideId: null,
 
-
   isOpen: false,
   hammer: null, 
 
-
-  clip: function() {
-    return Math.round((this.get('width') / 2), 0);  
-  }.property('width').cacheable(),
-
+  panSelector: null,
+  panElement: null,
 
   _setupHammer: function() {
 
-    var hammer = new Hammer(this.get('element'));
+    // Needs more love 
+    // var el = (this.get('panSelector')) ? Ember.$('panSelector')[0] : this.get('element'); 
+
+    var el = this.get('element'); 
+
+
+    var hammer = new Hammer(el);
 
     hammer.get('pan').set({
       direction: Hammer.DIRECTION_HORIZONTAL,
       threshold: 10
     });
     
-    // hammer.on('panstart', this.panStart.bind(this));
-    hammer.on('panleft panright', this.panHorizontal.bind(this));
+    hammer.on('panstart', this.panStart.bind(this));
+    hammer.on('panmove', this.panMove.bind(this));
     hammer.on('panend', this.panEnd.bind(this));
  
-    this.set('hammer', hammer);
-    // PreventGhostClicks.add(element);
+    this.setProperties({
+      hammer: hammer,
+      panElement: el
+    });
+    // PreventGhostClicks.add(el);
   }.on('willInsertElement'),
 
 
@@ -53,16 +58,17 @@ export default Ember.Component.extend({
   }.on('willDestroyElement'),
 
 
-  panStart: function() {
-    if (Ember.isEmpty(this.startX)) {
-      this.startX = this.$().position().left;       
+  panStart: function() {    
+    this.startX = Ember.$(this.get('panElement')).position().left;       
+
+    if (this.rafSlideId) {
+      window.cancelAnimationFrame(this.rafSlideId);
+      this.rafSlideId = null;
     }
   },
 
 
-  panHorizontal: function(event) {
-    this.panStart(); 
-
+  panMove: function(event) {
     var newX = this.startX + event.deltaX;
     newX = Math.min(Math.max(newX, -1 * this.get('width')), 0);
 
@@ -71,10 +77,6 @@ export default Ember.Component.extend({
     this.lastX = newX;
 
     if (!this.rafPanId) {
-      if (this.rafSlideId) {
-        window.cancelAnimationFrame(this.rafSlideId);
-        this.rafSlideId = null;
-      }
       this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
     }  
   },
@@ -89,14 +91,20 @@ export default Ember.Component.extend({
 
     if (absX === this.get('width') || absX === 0) { return; }
 
+    if (this.rafPanId) {
+      window.cancelAnimationFrame(this.rafPanId);
+      this.rafPanId = null;
+    }
+
     if (!this.rafSlideId) {
-      if (this.rafPanId) {
-        window.cancelAnimationFrame(this.rafPanId);
-        this.rafPanId = null;
-      }
       this.rafSlideId = window.requestAnimationFrame(this.animateHorizontalSlide.bind(this));
     }
   },
+
+
+  clip: function() {
+    return Math.round((this.get('width') / 2), 0);  
+  }.property('width'),
 
 
   animateHorizontalPan: function() {
@@ -118,7 +126,7 @@ export default Ember.Component.extend({
     style += '-o-transform: translate3d(' + xPos + 'px,0px,0px); ';
     style += 'transform: translate3d(' + xPos + 'px,0px,0px); ';
 
-    this.$()[0].style.cssText = style;
+    this.get('panElement').style.cssText = style;
   },
 
 
@@ -150,7 +158,7 @@ export default Ember.Component.extend({
     style += '-o-transform: translate3d(' + xPos + 'px,0px,0px); ';
     style += 'transform: translate3d(' + xPos + 'px,0px,0px); ';
 
-    this.$()[0].style.cssText = style;
+    this.get('panElement').style.cssText = style;
   }
 
 
