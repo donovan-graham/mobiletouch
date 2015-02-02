@@ -14,7 +14,10 @@ export default Ember.Mixin.create({
   panOpen: false,
   hammer: null, 
 
-  
+  percentage: 0,
+  overlayElement: null,
+  overlayWidth: 1024,
+
   panElementId: null,           // corresponds to document.getElementById()
   panElementByName: null,       // corresponds to document.getElementsByName()[0]
   panElementTagName: null,      // corresponds to document.getElementsByTagName()[0]
@@ -22,7 +25,9 @@ export default Ember.Mixin.create({
 
   panElement: null,
 
-  _setup: function() {
+  _panSetup: function() {
+
+
 
     // the element that will be translated
     var panElement = (this.panElementId) ? document.getElementById(this.panElementId) : 
@@ -48,12 +53,14 @@ export default Ember.Mixin.create({
     this.setProperties({
       hammer: hammer,
     });
-    
+
+    this.overlayWidth = Ember.$(document).width();
+
     // PreventGhostClicks.add(this.get('element'));
   }.on('didInsertElement'),
 
 
-  _teardown: function () {
+  _panTeardown: function () {
     var hammer = this.get('hammer');
 
     if (hammer) {
@@ -96,6 +103,8 @@ export default Ember.Mixin.create({
 
     this.lastX = newX;
 
+    // this.set('percentage', Math.abs(this.lastX / this.width));
+
     if (!this.rafPanId) {
       this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
     }  
@@ -110,6 +119,9 @@ export default Ember.Mixin.create({
     var absX = Math.abs(this.lastX);
 
     this.set('panOpen', (absX >= this.get('clip')));
+
+    // this.set('percentage', (absX >= this.get('clip')) ? 1 : 0);
+
 
     if (absX === this.get('width') || absX === 0) { return; }
 
@@ -149,6 +161,22 @@ export default Ember.Mixin.create({
     style += 'transform: translate3d(' + xPos + 'px,0px,0px); ';
 
     this.panElement.style.cssText = style;
+
+
+    if (this.overlayElement) {
+      var percentage = Math.abs(this.lastX / this.width);  
+
+      style = 'left: -' + this.overlayWidth + 'px; width: ' + this.overlayWidth + 'px;';
+
+      if (percentage === 0) {
+        style += 'display: none; opacity: 0;';
+      } else {
+        style += 'display: block; opacity: ' + 0.8 * percentage + ';';
+      }     
+      
+      this.overlayElement.style.cssText = style;
+    }
+
   },
 
 
