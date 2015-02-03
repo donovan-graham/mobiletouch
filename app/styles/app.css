@@ -42,22 +42,15 @@ h1{
   padding-top: 10px;
 }
 
-.header-menu{
+#app-header .menu{
   background: orange;
   top: 50px;
   position: absolute;
   z-index:1;
   width: 100%;
-  transform: translate3d(0px,-100%,0px);
-  transition: transform linear 100ms;
 }
 
-.header-menu.active{
-  transform: translate3d(0px,0px,0px);
-  transition: transform linear 100ms;
-}
-
-.header-menu li{
+#app-header .menu li{
   padding: 5px;
 }
 
@@ -72,7 +65,6 @@ h1{
   color: white;
   text-align: center;
   z-index:1;
-  border-top:1px solid white;
 }
 
 #app-sub-header .content{
@@ -82,24 +74,19 @@ h1{
   background: darkblue;
   position: relative;
   z-index:2;
+  border-top:1px solid white;
 }
 
-.sub-header-menu{
+#app-sub-header .menu{
   background: orange;
-  top: 100%;
-  position: absolute;
+  top: 0;
   z-index:1;
   width: 100%;
-  transform: translate3d(0px,-100%,0px);
-  transition: transform linear 100ms;
 }
 
-.sub-header-menu.active{
-  transform: translate3d(0px,0px,0px);
-  transition: transform linear 100ms;
-}
 
-.sub-header-menu li{
+
+#app-sub-header .menu li{
   padding: 5px;
 }
 

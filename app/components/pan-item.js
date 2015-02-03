@@ -5,7 +5,7 @@ export default Ember.Component.extend(PanElement, {
   classNames: ['list-item-content', 'no-select'],
   //classNameBindings: ['isPanOpen:open'],
 
-  width: 200, // pixels
-  duration: 200, // milli-seconds
+  // width: 200, // pixels
+  // duration: 200, // milli-seconds
 
 });
