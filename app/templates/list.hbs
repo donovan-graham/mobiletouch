@@ -3,10 +3,16 @@
   When dragging in an arc, only the starting item should be set as the target until the panEnd event is triggered.
 </div>
 
+<button {{action 'toggleEditMode'}}>Edit mode</button>
+
 
 <div class="list-container no-select">
 {{#each item in items}}
   <div class="list-item">
+    
+    <div class="list-check">
+      <input type="checkbox" />
+    </div>
 
     <pan-item>
       {{item}}
