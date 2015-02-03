@@ -10,6 +10,14 @@ export default Ember.Controller.extend({
       } else {
         this.set('sideMenuProgress', 0);
       }
+    },
+
+    toggleHeaderMenu: function() {
+      Ember.$('#app-header-menu').toggleClass('active');
+    },
+
+    toggleSubHeaderMenu: function() {
+      Ember.$('#app-sub-header-menu').toggleClass('active');
     }
   }
 });

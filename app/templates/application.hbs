@@ -13,9 +13,32 @@
   <h2 id="title">Welcome to Ember.js</h2>
 
   <header id="app-header">
-    <h1 id="app-title">Mobile Patterns</h1>
+    <div class="content">
+      <h1 id="app-title" {{action 'toggleHeaderMenu'}}>Mobile Patterns</h1>
+    </div>
+    
+    <header-menu>
+      <ul {{action 'toggleHeaderMenu'}}>
+        <li>option 1</li>
+        <li>option 2</li>
+        <li>option 3</li>
+      </ul>
+    </header-menu>
+
   </header>
 
+  <subheader id="app-sub-header">
+    <div class="content" {{action 'toggleSubHeaderMenu'}}></div>
+    <sub-header-menu>
+      <ul {{action 'toggleSubHeaderMenu'}}>
+        <li>option 1</li>
+        <li>option 2</li>
+        <li>option 3</li>
+      </ul>
+    </sub-header-menu>
+
+  </subheader>
 
   {{outlet}}
+
 </div>
