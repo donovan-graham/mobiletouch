@@ -7,6 +7,9 @@ export default Ember.Mixin.create({
 
   lastX: 0,
   startX: null,
+  startY: null,
+  startZ: null,
+
 
   rafPanId: null,
   rafSlideId: null,
@@ -14,7 +17,10 @@ export default Ember.Mixin.create({
   panOpen: false,
   hammer: null, 
 
-  
+  percentage: 0,
+  overlayElement: null,
+  overlayWidth: 1024,
+
   panElementId: null,           // corresponds to document.getElementById()
   panElementByName: null,       // corresponds to document.getElementsByName()[0]
   panElementTagName: null,      // corresponds to document.getElementsByTagName()[0]
@@ -22,7 +28,7 @@ export default Ember.Mixin.create({
 
   panElement: null,
 
-  _setup: function() {
+  _panSetup: function() {
 
     // the element that will be translated
     var panElement = (this.panElementId) ? document.getElementById(this.panElementId) : 
@@ -48,12 +54,14 @@ export default Ember.Mixin.create({
     this.setProperties({
       hammer: hammer,
     });
-    
+
+    this.overlayWidth = Ember.$(document).width();
+
     // PreventGhostClicks.add(this.get('element'));
   }.on('didInsertElement'),
 
 
-  _teardown: function () {
+  _panTeardown: function () {
     var hammer = this.get('hammer');
 
     if (hammer) {
@@ -75,9 +83,13 @@ export default Ember.Mixin.create({
     // this.startX = parseFloat(matrix[4]);
 
 
+
     var style = window.getComputedStyle(this.panElement);  // Need the DOM object
     var matrix = new WebKitCSSMatrix(style.webkitTransform);
     this.startX = matrix.m41;
+    this.startY = matrix.m42;
+    this.startZ = matrix.m43;
+
 
     if (this.rafSlideId) {
       window.cancelAnimationFrame(this.rafSlideId);
@@ -96,6 +108,8 @@ export default Ember.Mixin.create({
 
     this.lastX = newX;
 
+    // this.set('percentage', Math.abs(this.lastX / this.width));
+
     if (!this.rafPanId) {
       this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
     }  
@@ -110,6 +124,9 @@ export default Ember.Mixin.create({
     var absX = Math.abs(this.lastX);
 
     this.set('panOpen', (absX >= this.get('clip')));
+
+    // this.set('percentage', (absX >= this.get('clip')) ? 1 : 0);
+
 
     if (absX === this.get('width') || absX === 0) { return; }
 
@@ -133,7 +150,7 @@ export default Ember.Mixin.create({
 
     this.rafPanId = null;      // release the lock
 
-    var xPos = this.lastX,
+    var newX = this.lastX,
         style = '';
 
     style += '-webkit-transition: none; ';
@@ -142,13 +159,29 @@ export default Ember.Mixin.create({
     style += '-o-transition: none; ';
     style += 'transition: none; ';
 
-    style += '-webkit-transform: translate3d(' + xPos + 'px,0px,0px) scale3d(1,1,1); ';
-    style += '-moz-transform: translate3d(' + xPos + 'px,0px,0px); ';
-    style += '-ms-transform: translate3d(' + xPos + 'px,0px,0px); ';
-    style += '-o-transform: translate3d(' + xPos + 'px,0px,0px); ';
-    style += 'transform: translate3d(' + xPos + 'px,0px,0px); ';
+    style += '-webkit-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += '-moz-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+    style += '-ms-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+    style += '-o-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+    style += 'transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
 
     this.panElement.style.cssText = style;
+
+
+    if (this.overlayElement) {
+      var percentage = Math.abs(this.lastX / this.width);  
+
+      style = 'left: -' + this.overlayWidth + 'px; width: ' + this.overlayWidth + 'px;';
+
+      if (percentage === 0) {
+        style += 'display: none; opacity: 0;';
+      } else {
+        style += 'display: block; opacity: ' + 0.8 * percentage + ';';
+      }     
+      
+      this.overlayElement.style.cssText = style;
+    }
+
   },
 
 
@@ -156,14 +189,14 @@ export default Ember.Mixin.create({
 
     this.rafSlideId = null;      // release the lock
 
-    var xPos,
+    var newX,
         relativeDuration,
         animation = 'ease-out';
 
-    xPos = (this.get('panOpen')) ? -1 * this.get('width') : 0;
+    newX = (this.get('panOpen')) ? -1 * this.get('width') : 0;
 
     // calculate the remaining duration (time) needed to complete the action
-    relativeDuration =  Math.abs(xPos - this.lastX) / (this.get('clip') / this.get('duration'));
+    relativeDuration =  Math.abs(newX - this.lastX) / (this.get('clip') / this.get('duration'));
 
 
     var style = '';   
@@ -174,11 +207,11 @@ export default Ember.Mixin.create({
     style += '-o-transition: -o-transform ' + relativeDuration + 'ms ' + animation + '; ';
     style += 'transition: transform ' + relativeDuration + 'ms ' + animation + '; ';
 
-    style += '-webkit-transform: translate3d(' + xPos + 'px,0px,0px) scale3d(1,1,1); ';
-    style += '-moz-transform: translate3d(' + xPos + 'px,0px,0px); ';
-    style += '-ms-transform: translate3d(' + xPos + 'px,0px,0px); ';
-    style += '-o-transform: translate3d(' + xPos + 'px,0px,0px); ';
-    style += 'transform: translate3d(' + xPos + 'px,0px,0px); ';
+    style += '-webkit-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += '-moz-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+    style += '-ms-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+    style += '-o-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+    style += 'transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
 
     this.panElement.style.cssText = style;
   }
