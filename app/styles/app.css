@@ -235,6 +235,10 @@ h1{
 } 
 
 .list-container.is-checking .list-item-content {
+  -webkit-transform: translate3d(30px,0px,0px) scale3d(1,1,1) !important;
+  -moz-transform: translate3d(30px,0px,0px) !important;
+  -ms-transform: translate3d(30px,0px,0px) !important;
+  -o-transform: translate3d(30px,0px,0px) !important; 
   transform: translate3d(30px, 0px, 0px) !important;
   -webkit-transform: translate3d(30px,0px,0px) scale3d(1,1,1);
 

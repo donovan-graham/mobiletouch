@@ -13,10 +13,11 @@
     "ember-qunit-notifications": "0.0.4",
     "qunit": "~1.15.0",
     "handlebars": "2.0.0",
-    "hammerjs": "~2.0.4"
+    "hammerjs": "~2.0.4",
+    "fastclick": "~1.0.6"
   },
   "resolutions": {
     "ember": "canary",
     "jquery": "2.1.3"
-  } 
+  }
 }

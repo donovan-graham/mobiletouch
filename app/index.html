@@ -18,11 +18,17 @@
 
     <meta name="msapplication-tap-highlight" content="no" />
   </head>
-  <body class="no-select">
+  <body>
     {{content-for 'body'}}
 
     <script src="assets/vendor.js"></script>
     <script src="assets/mobiletouch.js"></script>
+    <script> 
+      $(document).ready(function() {
+        FastClick.attach(document.body); 
+      });
+    </script>
+
 
     {{content-for 'body-footer'}}
   </body>
