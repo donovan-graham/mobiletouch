@@ -6,4 +6,4 @@ export default function cssTransition(prop, duration, animation) {
   style += '-o-transition: -o-' + prop + ' ' + duration + 'ms ' + animation + '; ';
   style += 'transition: ' + prop + ' ' + duration + 'ms ' + animation + '; ';
   return style;
-};
+}

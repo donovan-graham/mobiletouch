@@ -6,4 +6,4 @@ export default function cssTransitionNone() {
   style += '-o-transition: " "; ';
   style += 'transition: " "; ';
   return style;
-};
+}

@@ -1,6 +1,4 @@
 import Ember from 'ember';
-
-import cssTransition from '../utils/css-transition';
 import cssTranslate3D from '../utils/css-translate3d';
 import cssTransitionTransform from '../utils/css-transition-transform';
 import cssTransitionNone from '../utils/css-transition-none';

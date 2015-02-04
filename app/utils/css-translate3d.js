@@ -6,4 +6,4 @@ export default function cssTranslate3D(x,y,z) {
   style += '-o-transform: translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px); ';
   style += 'transform: translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px); ';
   return style;
-};
+}
