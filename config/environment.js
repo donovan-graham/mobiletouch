@@ -5,7 +5,7 @@ module.exports = function(environment) {
     modulePrefix: 'mobiletouch',
     environment: environment,
     baseURL: '/',
-    locationType: 'auto',
+    locationType: 'hash',
     
     EmberENV: {
       FEATURES: {
