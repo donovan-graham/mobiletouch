@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
 
   appSubMenuItems: ['sub 1', 'sub 2', 'sub 3', 'sub 4', 'sub 5'],
 
+  appFooterMenuItems: ['foot 1', 'foot 2', 'foot 3', 'foot 4', 'foot 5'],
 
   // appMenuItems: function() {
   //   return ['main 1', 'main 2', 'main 3'];

@@ -2,6 +2,8 @@ import Ember from 'ember';
 import AppMenu from '../mixins/app-menu';
 
 export default Ember.Component.extend(AppMenu, {
-  tagName: 'header'
-
+  
+  tagName: 'footer',
+  origin: 'bottom'
+  
 });
