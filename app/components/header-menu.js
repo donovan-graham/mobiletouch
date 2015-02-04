@@ -12,17 +12,33 @@ var cssTranslate3D = function (x,y,z) {
   style += '-o-transform: translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px); ';
   style += 'transform: translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px); ';
   return style;
-}
+};
 
-var cssTransition = function (duration, animation) {
+var cssTransition = function (prop, duration, animation) {
   var style = '';  
-  style += '-webkit-transition: -webkit-transform ' + duration + 'ms ' + animation + '; ';
-  style += '-moz-transition: -moz-transform ' + duration + 'ms ' + animation + '; ';
-  style += '-ms-transition: -ms-transform ' + duration + 'ms ' + animation + '; ';
-  style += '-o-transition: -o-transform ' + duration + 'ms ' + animation + '; ';
-  style += 'transition: transform ' + duration + 'ms ' + animation + '; ';
+  style += '-webkit-transition: -webkit-' + prop + ' ' + duration + 'ms ' + animation + '; ';
+  style += '-moz-transition: -moz-' + prop + ' ' + duration + 'ms ' + animation + '; ';
+  style += '-ms-transition: -ms-' + prop + ' ' + duration + 'ms ' + animation + '; ';
+  style += '-o-transition: -o-' + prop + ' ' + duration + 'ms ' + animation + '; ';
+  style += 'transition: ' + prop + ' ' + duration + 'ms ' + animation + '; ';
   return style;
-}
+};
+
+var cssTransitionTransform = function (duration, animation) {
+  return cssTransition('transform', duration, animation);
+};
+
+var cssTransitionNone = function () {
+  var style = '';  
+  style += '-webkit-transition: " "; ';
+  style += '-moz-transition: " "; ';
+  style += '-ms-transition: " "; ';
+  style += '-o-transition: " "; ';
+  style += 'transition: " "; ';
+  return style;
+};
+
+
 
 
 
@@ -38,11 +54,27 @@ export default Ember.Component.extend({
   itemDuration: 20, // ms
 
   menuElement: null,
+  menuHeight: 0,
+
   rafMenuId: null,
 
-  totalHeight: function() {
-    return this.get('items.length') * this.get('itemHeight');
-  }.property('items.length', 'itemHeight'),
+
+  positionMenu: function() {
+    this.menuHeight = this.get('items.length') * this.get('itemHeight');
+    var newY = (this.get('isOpen')) ? 0 : -1 * this.menuHeight;
+    this.menuElement.style.cssText = cssTransitionNone() + cssTranslate3D(0, newY, 0);
+  },
+
+
+  _setupHeaderMenu: function() {
+    this.menuElement = this.$().find('ul.menu')[0];
+    this.positionMenu();
+  }.on('didInsertElement'),
+
+
+  observeItemsLength: function() {
+    this.positionMenu();
+  }.observes('items.length'),
 
 
   totalDuration: function() {
@@ -50,17 +82,11 @@ export default Ember.Component.extend({
   }.property('items.length', 'itemDuration'),
 
 
-  _setupHeaderMenu: function() {
-    this.menuElement = this.$().find('ul.menu')[0];
-    var newY = (this.get('isOpen')) ? 0 : -1 * this.get('totalHeight');
-    this.menuElement.style.cssText = cssTranslate3D(0, newY, 0);
-  }.on('didInsertElement'),
-
-
   slideAnimation: function() {
     this.rafMenuId = null;      // release the lock
-    var newY = (this.get('isOpen')) ? 0 : -1 * this.get('totalHeight');
-    this.menuElement.style.cssText = cssTransition(this.get('totalDuration'), 'linear') + cssTranslate3D(0, newY, 0);
+    var newY = (this.get('isOpen')) ? 0 : -1 * this.menuHeight;
+
+    this.menuElement.style.cssText = cssTransitionTransform(this.get('totalDuration'), 'linear') + cssTranslate3D(0, newY, 0);
   }, 
 
 
