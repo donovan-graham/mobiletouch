@@ -45,7 +45,5 @@ export default Ember.Controller.extend({
       this.set('appSubMenuItems', this.get('appSubMenuItems').slice(0,-1));
     }
 
-
-
   }
 });

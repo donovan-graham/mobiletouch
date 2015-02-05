@@ -21,6 +21,9 @@
 
   <button {{action 'addItem'}}>Add sub-header item</button>
   <button {{action 'removeItem'}}>Remove sub-header item</button>
+  <hr>
+  <button {{action 'openModal'}}>Open modal</button>
+  <hr>
 
   {{outlet}}
 
@@ -29,3 +32,5 @@
   </footer-menu>
 
 </div>
+
+{{outlet 'modal'}}
