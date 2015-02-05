@@ -26,7 +26,7 @@ h1{
   background: darkblue;
   color: white;
   text-align: center;
-  z-index:2;
+  z-index:110;
 }
 
 #app-header .content{
@@ -54,6 +54,43 @@ h1{
   padding: 5px;
 }
 
+#app-footer {
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  height: 25px;
+  background: darkblue;
+  color: white;
+  text-align: center;
+  z-index:109;
+}
+
+#app-footer .content{
+  display: block;
+  width:100%;
+  height: 100%;
+  background: darkblue;
+  position: relative;
+  z-index:2;
+  border-top:1px solid white;
+}
+
+#app-footer .menu{
+  background: orange;
+  position: absolute;
+  top: 0;
+  z-index:1;
+  width: 100%;
+}
+
+
+
+#app-footer .menu li{
+  padding: 5px;
+}
+
 #app-sub-header {
   position: fixed;
   top: 50px;
@@ -64,7 +101,7 @@ h1{
   background: darkblue;
   color: white;
   text-align: center;
-  z-index:1;
+  z-index:109;
 }
 
 #app-sub-header .content{
@@ -90,10 +127,8 @@ h1{
   padding: 5px;
 }
 
-
-
 #app-content {
-  padding: 70px 20px 20px;
+  padding: 90px 20px 20px;
 }
 
 
@@ -205,6 +240,7 @@ h1{
   -ms-transform: translate3d(30px,0px,0px) !important;
   -o-transform: translate3d(30px,0px,0px) !important; 
   transform: translate3d(30px, 0px, 0px) !important;
+  -webkit-transform: translate3d(30px,0px,0px) scale3d(1,1,1);
 
   -webkit-transition: none !important;
   -moz-transition: none !important;

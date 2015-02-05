@@ -1,0 +1,9 @@
+<div class="content" {{action 'toggleMenu'}}>
+    {{yield}}
+</div>
+
+<ul class="menu" {{action 'toggleMenu'}}>
+  {{#each item in items}}
+    <li>{{item}}</li>
+  {{/each}}
+</ul>

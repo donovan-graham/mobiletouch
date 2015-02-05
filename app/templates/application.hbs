@@ -19,6 +19,13 @@
      Sub header here
   </header-menu>
 
+  <button {{action 'addItem'}}>Add sub-header item</button>
+  <button {{action 'removeItem'}}>Remove sub-header item</button>
+
   {{outlet}}
+
+  <footer-menu id="app-footer" items={{appFooterMenuItems}} itemHeight=26 >
+     Footer here
+  </footer-menu>
 
 </div>
