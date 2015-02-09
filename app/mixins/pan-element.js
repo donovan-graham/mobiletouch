@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import PreventGhostClicks from "ember-mobiletouch/utils/prevent-ghost-clicks";
 
 export default Ember.Mixin.create({
 
@@ -13,6 +14,9 @@ export default Ember.Mixin.create({
 
   rafPanId: null,
   rafSlideId: null,
+
+
+  classList: null,
 
   panOpen: false,
   hammer: null, 
@@ -39,6 +43,14 @@ export default Ember.Mixin.create({
 
     this.panElement = panElement;
 
+    // setup intial props
+    var style = window.getComputedStyle(this.panElement);  // Need the DOM object
+    var matrix = new WebKitCSSMatrix(style.webkitTransform);
+    this.startX = matrix.m41;
+    this.startY = matrix.m42;
+    this.startZ = matrix.m43;
+
+
     // the element that handle the drag event
     var hammer = new Hammer(this.get('element'));
 
@@ -57,7 +69,7 @@ export default Ember.Mixin.create({
 
     this.overlayWidth = Ember.$(document).width();
 
-    // PreventGhostClicks.add(this.get('element'));
+    PreventGhostClicks.add(this.get('element'));
   }.on('didInsertElement'),
 
 
@@ -69,7 +81,7 @@ export default Ember.Mixin.create({
       this.set('hammer', null);
     }
 
-    // PreventGhostClicks.remove(this.get('element'));
+    PreventGhostClicks.remove(this.get('element'));
   }.on('willDestroyElement'),
 
 
@@ -82,14 +94,11 @@ export default Ember.Mixin.create({
     // matrix = matrix.substr(7, matrix.length - 8).split(', ');
     // this.startX = parseFloat(matrix[4]);
 
-
-
     var style = window.getComputedStyle(this.panElement);  // Need the DOM object
     var matrix = new WebKitCSSMatrix(style.webkitTransform);
     this.startX = matrix.m41;
     this.startY = matrix.m42;
     this.startZ = matrix.m43;
-
 
     if (this.rafSlideId) {
       window.cancelAnimationFrame(this.rafSlideId);
@@ -117,18 +126,27 @@ export default Ember.Mixin.create({
 
 
   panEnd: function() {
-    document.getElementsByTagName('body')[0].classList.remove('no-select');
+    // document.getElementsByTagName('body')[0].classList.remove('no-select');
 
     this.startX = null; 
 
     var absX = Math.abs(this.lastX);
+    var isOpen = (absX >= this.get('clip'));
 
-    this.set('panOpen', (absX >= this.get('clip')));
+    this.set('panOpen', isOpen);
+
 
     // this.set('percentage', (absX >= this.get('clip')) ? 1 : 0);
 
+    if (absX === this.get('width') || absX === 0) { 
 
-    if (absX === this.get('width') || absX === 0) { return; }
+      if (this.overlayElement && !isOpen && this.classList) {
+        this.classList = null;
+        this.overlayElement.classList.remove('active');      
+      }
+
+      return; 
+    }
 
     if (this.rafPanId) {
       window.cancelAnimationFrame(this.rafPanId);
@@ -145,6 +163,7 @@ export default Ember.Mixin.create({
     return Math.round((this.get('width') / 2), 0);  
   }.property('width'),
 
+ 
 
   animateHorizontalPan: function() {
 
@@ -167,20 +186,30 @@ export default Ember.Mixin.create({
 
     this.panElement.style.cssText = style;
 
-
-    if (this.overlayElement) {
-      var percentage = Math.abs(this.lastX / this.width);  
-
-      style = 'left: -' + this.overlayWidth + 'px; width: ' + this.overlayWidth + 'px;';
-
-      if (percentage === 0) {
-        style += 'display: none; opacity: 0;';
-      } else {
-        style += 'display: block; opacity: ' + 0.8 * percentage + ';';
-      }     
-      
-      this.overlayElement.style.cssText = style;
+    if (this.overlayElement && !this.classList) {
+      this.classList = 'active';
+      this.overlayElement.classList.add('active');
     }
+
+
+
+    // if (this.overlayElement) {
+    //   var percentage = Math.abs(this.lastX / this.width);  
+    //   percentage = percentage.toFixed(2);
+
+    //   console.log(percentage, "%")
+
+
+    //   style = 'left: -' + this.overlayWidth + 'px; width: ' + this.overlayWidth + 'px;';
+
+    //   if (percentage === 0) {
+    //     style += 'display: none; opacity: 0;';
+    //   } else {
+    //     style += 'display: block; opacity: ' + 0.8 * percentage + ';';
+    //   }     
+      
+    //   this.overlayElement.style.cssText = style;
+    // }
 
   },
 
@@ -196,7 +225,9 @@ export default Ember.Mixin.create({
     newX = (this.get('panOpen')) ? -1 * this.get('width') : 0;
 
     // calculate the remaining duration (time) needed to complete the action
-    relativeDuration =  Math.abs(newX - this.lastX) / (this.get('clip') / this.get('duration'));
+    // relativeDuration = Math.abs(newX - this.lastX) / (this.get('clip') / this.get('duration'));
+
+    relativeDuration = this.get('duration');
 
 
     var style = '';   
@@ -214,6 +245,35 @@ export default Ember.Mixin.create({
     style += 'transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
 
     this.panElement.style.cssText = style;
+
+    if (this.get('panOpen') && !this.classList) {
+      this.classList = 'active';
+      this.overlayElement.classList.add('active');
+    } 
+
+    if (!this.get('panOpen') && this.classList) {
+      this.classList = null;
+      this.overlayElement.classList.remove('active');      
+    }
+
+
+    // keyframe .... 
+
+    // if (this.overlayElement) {
+    //   var percentage = Math.abs(this.lastX / this.width);  
+
+    //   style = 'left: -' + this.overlayWidth + 'px; width: ' + this.overlayWidth + 'px;';
+
+    //   if (percentage === 0) {
+    //     style += 'display: none; opacity: 0;';
+    //   } else {
+    //     style += 'display: block; opacity: ' + 0.8 * percentage + ';';
+    //   }     
+      
+    //   this.overlayElement.style.cssText = style;
+    // }
+
+
   }
 
 

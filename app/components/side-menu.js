@@ -18,7 +18,7 @@ export default Ember.Component.extend(PanElement, {
   panElementCssSelector: null,
 
   _setup: function() {
-    this.overlayElement = this.$().find('.side-menu-overlay')[0];
+    this.overlayElement = document.getElementById('overlay');
   }.on('didInsertElement'),
 
   _teardown: function() {
@@ -30,6 +30,17 @@ export default Ember.Component.extend(PanElement, {
   actions: {
     toggleMenu: function() {
       console.log('toggleMenu');
+
+      this.toggleProperty('panOpen');
+
+      if (this.rafPanId) {
+        window.cancelAnimationFrame(this.rafPanId);
+        this.rafPanId = null;
+      }
+
+      if (!this.rafSlideId) {
+        this.rafSlideId = window.requestAnimationFrame(this.animateHorizontalSlide.bind(this));
+      }
     }
   }
 
