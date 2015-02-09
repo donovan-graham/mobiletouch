@@ -172,49 +172,14 @@ h1{
   color: white;
 }
 
-/*
-.side-menu-overlay {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  left: -100%;
-
-  display: block;
-  overflow: hidden;
-  z-index: 209;
-  
-  background-color: #1b1b1b;
-  opacity: 1;
-  color: #fff;
-  z-index: 2;
-}
-*/
-/*
-iv > ul {
-  . . .
-  visibility:hidden;
-  opacity:0;
-  transition: visibility 0s linear 0.5s, opacity 0.5s linear;
-}
-div:hover > ul {
-  visibility:visible;
-  opacity:1;
-  transition-delay: 0s;
-}
-*/
-
-#overlay {
+#app-overlay {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 190;
-
   background-color: #1b1b1b;
-
-  /*visibility: hidden;*/
   opacity: 0;
 
   -webkit-transform: translate3d(-10000px,0px,0px);
@@ -230,18 +195,14 @@ div:hover > ul {
   transition: opacity 200ms linear, transform 0ms linear 200ms;
 }
 
-
-#overlay.active {
-  /*visibility: visible;*/
+#app-overlay.active {
   opacity: 0.8;
-
 
   -webkit-transform: translate3d(0px,0px,0px);
   -moz-transform: translate3d(0px,0px,0px);
   -ms-transform: translate3d(0px,0px,0px);
   -o-transform: translate3d(0px,0px,0px);
   transform: translate3d(0px,0px,0px);
-
 
   -webkit-transition-delay: 0ms;
   -moz-transition-delay: 0ms;

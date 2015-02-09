@@ -11,19 +11,14 @@ export default Ember.Mixin.create({
   startY: null,
   startZ: null,
 
-
   rafPanId: null,
   rafSlideId: null,
-
-
-  classList: null,
 
   panOpen: false,
   hammer: null, 
 
-  percentage: 0,
   overlayElement: null,
-  overlayWidth: 1024,
+  overlayActive: false,
 
   panElementId: null,           // corresponds to document.getElementById()
   panElementByName: null,       // corresponds to document.getElementsByName()[0]
@@ -67,7 +62,6 @@ export default Ember.Mixin.create({
       hammer: hammer,
     });
 
-    this.overlayWidth = Ember.$(document).width();
 
     PreventGhostClicks.add(this.get('element'));
   }.on('didInsertElement'),
@@ -117,8 +111,6 @@ export default Ember.Mixin.create({
 
     this.lastX = newX;
 
-    // this.set('percentage', Math.abs(this.lastX / this.width));
-
     if (!this.rafPanId) {
       this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
     }  
@@ -135,13 +127,10 @@ export default Ember.Mixin.create({
 
     this.set('panOpen', isOpen);
 
-
-    // this.set('percentage', (absX >= this.get('clip')) ? 1 : 0);
-
     if (absX === this.get('width') || absX === 0) { 
 
-      if (this.overlayElement && !isOpen && this.classList) {
-        this.classList = null;
+      if (this.overlayElement && !isOpen && this.overlayActive) {
+        this.overlayActive = false;
         this.overlayElement.classList.remove('active');      
       }
 
@@ -186,30 +175,10 @@ export default Ember.Mixin.create({
 
     this.panElement.style.cssText = style;
 
-    if (this.overlayElement && !this.classList) {
-      this.classList = 'active';
+    if (this.overlayElement && !this.overlayActive) {
+      this.overlayActive = true;
       this.overlayElement.classList.add('active');
     }
-
-
-
-    // if (this.overlayElement) {
-    //   var percentage = Math.abs(this.lastX / this.width);  
-    //   percentage = percentage.toFixed(2);
-
-    //   console.log(percentage, "%")
-
-
-    //   style = 'left: -' + this.overlayWidth + 'px; width: ' + this.overlayWidth + 'px;';
-
-    //   if (percentage === 0) {
-    //     style += 'display: none; opacity: 0;';
-    //   } else {
-    //     style += 'display: block; opacity: ' + 0.8 * percentage + ';';
-    //   }     
-      
-    //   this.overlayElement.style.cssText = style;
-    // }
 
   },
 
@@ -246,33 +215,15 @@ export default Ember.Mixin.create({
 
     this.panElement.style.cssText = style;
 
-    if (this.get('panOpen') && !this.classList) {
-      this.classList = 'active';
+    if (this.overlayElement && this.get('panOpen') && !this.overlayActive) {
+      this.overlayActive = true;
       this.overlayElement.classList.add('active');
     } 
 
-    if (!this.get('panOpen') && this.classList) {
-      this.classList = null;
+    if (this.overlayElement && !this.get('panOpen') && this.overlayActive) {
+      this.overlayActive = false;
       this.overlayElement.classList.remove('active');      
     }
-
-
-    // keyframe .... 
-
-    // if (this.overlayElement) {
-    //   var percentage = Math.abs(this.lastX / this.width);  
-
-    //   style = 'left: -' + this.overlayWidth + 'px; width: ' + this.overlayWidth + 'px;';
-
-    //   if (percentage === 0) {
-    //     style += 'display: none; opacity: 0;';
-    //   } else {
-    //     style += 'display: block; opacity: ' + 0.8 * percentage + ';';
-    //   }     
-      
-    //   this.overlayElement.style.cssText = style;
-    // }
-
 
   }
 

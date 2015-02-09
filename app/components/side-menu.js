@@ -18,7 +18,7 @@ export default Ember.Component.extend(PanElement, {
   panElementCssSelector: null,
 
   _setup: function() {
-    this.overlayElement = document.getElementById('overlay');
+    this.overlayElement = document.getElementById('app-overlay');
   }.on('didInsertElement'),
 
   _teardown: function() {

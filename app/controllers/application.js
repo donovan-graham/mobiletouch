@@ -1,24 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  sideMenuProgress: 0,
-
 
   appMenuItems: ['main 1', 'main 2', 'main 3'],
 
   appSubMenuItems: ['sub 1', 'sub 2', 'sub 3', 'sub 4', 'sub 5'],
 
   appFooterMenuItems: ['foot 1', 'foot 2', 'foot 3', 'foot 4', 'foot 5'],
-
-  // appMenuItems: function() {
-  //   return ['main 1', 'main 2', 'main 3'];
-  // }.property(),
-
-
-  // appSubMenuItems: function() {
-  //   return ['sub 1', 'sub 2', 'sub 3', 'sub 4', 'sub 5'];
-  // }.property(),
-
 
   actions: {
    
