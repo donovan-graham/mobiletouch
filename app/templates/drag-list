@@ -1,9 +1,0 @@
-<div class="list-container no-select">
-{{#each item in items}}
-  <div class="list-item">
-    <drag-item width=200 duration=200>
-      {{item}}    
-    </drag-item>
-  </div>
-{{/each}}
-</div>
