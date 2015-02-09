@@ -25,7 +25,6 @@ module.exports = function(environment) {
   };
 
 
-
   ENV.contentSecurityPolicy = {
       'default-src': "'none'",
       'script-src': "'self' 'unsafe-inline'",
@@ -35,6 +34,23 @@ module.exports = function(environment) {
       'img-src': "'self' data:",
       'style-src': "'self' 'unsafe-inline'", 
       'report-uri': "'http://localhost:4200'"
+  };
+
+
+  ENV.mobileTouch = {
+    use : ['fastclick', 'press', 'swipe', 'tap'],
+    fastclick: true,
+    events: {
+      keydown     : 'keyDown',
+      keyup       : 'keyUp',
+      keypress    : 'keyPress',
+      contextmenu : 'contextMenu',
+      focusin     : 'focusIn',
+      focusout    : 'focusOut',
+      submit      : 'submit',
+      input       : 'input',
+      change      : 'change',
+    }
   };
 
 

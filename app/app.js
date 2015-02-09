@@ -13,6 +13,8 @@ var App = Ember.Application.extend({
 
 loadInitializers(App, config.modulePrefix);
 
+/* 
+// Moved into ember-mobiletouch, and configured in environment.js 
 
 Ember.EventDispatcher.reopen({
   events: {
@@ -29,6 +31,7 @@ Ember.EventDispatcher.reopen({
     change      : 'change',
   },
 });
+*/
 
 export default App;
 
