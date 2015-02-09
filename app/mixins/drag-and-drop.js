@@ -30,6 +30,7 @@ export default Ember.Mixin.create({
   panElement: null,
 
   dragContainer: null,
+  dragContainerY: null,
 
   _setup: function() {
 
@@ -43,8 +44,6 @@ export default Ember.Mixin.create({
     this.panElement = panElement;
 
     this.dragContainer = document.getElementById('drag-container');
-
-
 
     var hammer2 = new Hammer.Manager(this.get('element'));
       hammer2.add(new Hammer.Pan({ enable: false, direction: Hammer.DIRECTION_VERTICAL, threshold: 10 }));
@@ -121,6 +120,8 @@ export default Ember.Mixin.create({
 
       this.set('isDragging', true);
 
+      this.dragContainerY = this.dragContainer.getBoundingClientRect();
+
       console.log('panStart');
 
       var style = window.getComputedStyle(this.panElement);  // Need the DOM object
@@ -139,53 +140,33 @@ export default Ember.Mixin.create({
 
   panMove: function(event) {
 
+      //console.log('screenY:', event.srcEvent.screenY, 'offsetY:', event.srcEvent.offsetY, 'clientY:', event.srcEvent.clientY, this.dragContainerY.top, this.dragContainerY.bottom);
+
+      // OFFSETS
+      // -offset relative to top of device screen
+      // console.log('screenX:', event.srcEvent.screenX, 'screenY:', event.srcEvent.screenY);
+      
+      // -offset is cursor position relative to item
+      // console.log(event.srcEvent.layerX, event.srcEvent.layerY);
+      // console.log('offsetX:', event.srcEvent.offsetX, 'offsetY:', event.srcEvent.offsetY);
+      
+      // -offset relative to top of viewport
+      // console.log(event.center);
+      // console.log('clientX:', event.srcEvent.clientX, 'clientY:', event.srcEvent.clientY);
+      
+
+
       // x cant be more origin
       // x cant be less than orign - width
       var newY = this.startY + event.deltaY;
-      // newY = Math.min(Math.max(newY, -1 * this.get('width')), 0);
-
-      // console.log($(document.elementFromPoint(event.srcEvent.pageX, event.srcEvent.pageY)).html());
-
-      // debugger; 
-      // offset relative to top of device screen
-      //console.log('screenX:', event.srcEvent.screenX, 'screenY:', event.srcEvent.screenY);
-
-      // offset relative to top of viewport
-      // console.log('clientX:', event.srcEvent.clientX, 'clientY:', event.srcEvent.clientY);
-      // debugger;
-      console.log(event.srcEvent.clientX,event.srcEvent.clientY );
-
-      console.log($(document.elementFromPoint(event.srcEvent.clientX,event.srcEvent.clientY))[0].getBoundingClientRect() );
-
-      // console.log(childNode);
       
-
-      //offset is cursor position relative to item
-      //console.log('offsetX:', event.srcEvent.offsetX, 'offsetY:', event.srcEvent.offsetY);
-
+      if (event.center.y <= this.dragContainerXY){return;}
 
       if (this.lastY === newY) { return; }
 
       this.lastY = newY;
 
       var itemHeight = 41;
-
-      // console.log(event.deltaY);
-// 
-
-
-      // if (event.deltaY > (itemHeight / 2)){
-      //   console.log('halfway over');
-      //   debugger;
-      // }
-
-      // if (event.deltaY > itemHeight){
-      //   console.log('fully over');
-      // }
-
-
-
-      // this.set('percentage', Math.abs(this.lastX / this.width));
 
       if (!this.rafPanId) {
         this.rafPanId = window.requestAnimationFrame(this.animateVerticalDrag.bind(this));
@@ -196,10 +177,30 @@ export default Ember.Mixin.create({
 
   panEnd: function(event) {
 
+      // debugger;
       console.log('panend >>>>>');
+      var parent = event.target.parentNode,
+          item = event.target,
+          firstItem = event.target.parentNode.childNodes[0],
+          lastItem = event.target.parentNode.childNodes.lastChild,
+          activeElement = $(document.elementFromPoint(event.center.x,event.center.y))[0];
 
-      event.target.parentNode.insertBefore(event.target, $(document.elementFromPoint(event.srcEvent.clientX,event.srcEvent.clientY))[0]);
+      if (activeElement !== parent && parent === this.dragContainer) {
+        if (event.center.y <= this.dragContainerY.top){
+          parent.insertBefore(item, firstItem);
+        }else if (event.center.y >= this.dragContainerY.bottom){
+          parent.insertBefore(item, lastItem);
+        }else{
+          if (activeElement.parentNode === parent){
+            parent.insertBefore(item, activeElement);
+          }
+        }
+      }
 
+
+     
+
+      
       this.get('hammer2').get('pan').set({ enable: false });
 
       document.getElementsByTagName('body')[0].classList.remove('no-select');
@@ -217,6 +218,9 @@ export default Ember.Mixin.create({
         window.cancelAnimationFrame(this.rafPanId);
         this.rafPanId = null;
       }
+
+      this.resetPosition();
+
 
       if (!this.rafSlideId) {
         this.rafSlideId = window.requestAnimationFrame(this.animateVerticalSlide.bind(this));
@@ -266,6 +270,17 @@ export default Ember.Mixin.create({
 
   },
 
+  resetPosition: function(){
+    var style;
+
+    style += '-webkit-transform: translate3d(' + this.startX + 'px,' + 0 + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += '-moz-transform: translate3d(' + this.startX + 'px,' + 0 + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += '-ms-transform: translate3d(' + this.startX + 'px,' + 0 + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += '-o-transform: translate3d(' + this.startX + 'px,' + 0 + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += 'transform: translate3d(' + this.startX + 'px,' + 0 + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+
+    this.panElement.style.cssText = style;
+  },
 
   animateVerticalSlide: function() {
 
@@ -294,10 +309,10 @@ export default Ember.Mixin.create({
     style += 'transition: transform ' + relativeDuration + 'ms ' + animation + '; ';
 
     style += '-webkit-transform: translate3d(' + this.startX + 'px,' + newY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
-    style += '-moz-transform: translate3d(' + this.startX + 'px,' + newY + 'px,' + this.startZ + 'px); ';
-    style += '-ms-transform: translate3d(' + this.startX + 'px,' + newY + 'px,' + this.startZ + 'px); ';
-    style += '-o-transform: translate3d(' + this.startX + 'px,' + newY + 'px,' + this.startZ + 'px); ';
-    style += 'transform: translate3d(' + this.startX + 'px,' + newY + 'px,' + this.startZ + 'px); ';
+    style += '-moz-transform: translate3d(' + this.startX + 'px,' + newY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += '-ms-transform: translate3d(' + this.startX + 'px,' + newY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += '-o-transform: translate3d(' + this.startX + 'px,' + newY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += 'transform: translate3d(' + this.startX + 'px,' + newY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
 
     this.panElement.style.cssText = style;
   }
