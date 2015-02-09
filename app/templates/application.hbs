@@ -14,6 +14,16 @@
   <header-menu id="app-header" items={{appMenuItems}} itemHeight=30>
     <h1 id="app-title">Mobile Patterns</h1>
   </header-menu>
+  
+  <header-menu id="app-sub-header" items={{appSubMenuItems}} itemHeight=30>
+     Sub header here
+  </header-menu>
+
+  <button {{action 'addItem'}}>Add sub-header item</button>
+  <button {{action 'removeItem'}}>Remove sub-header item</button>
+  <hr>
+  <button {{action 'openModal'}}>Open modal</button>
+  <hr>
 
   {{outlet}}
 

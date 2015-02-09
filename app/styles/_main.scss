@@ -191,6 +191,15 @@ h1{
 
   background-color: green;
   color: white;
+  li{
+    padding: 10px;
+    font-size:16px;
+    color: white;
+    a{
+      color: white;
+      text-decoration: none;
+    }
+  }
 }
 
 .side-menu-button {
@@ -281,11 +290,11 @@ h1{
 } 
 
 .list-container.is-checking .list-item-content {
-  -webkit-transform: translate3d(30px,0px,0px) scale3d(1,1,1);
-  -moz-transform: translate3d(30px,0px,0px);
-  -ms-transform: translate3d(30px,0px,0px);
-  -o-transform: translate3d(30px,0px,0px); 
-  transform: translate3d(30px, 0px, 0px);
+  -webkit-transform: translate3d(30px,0px,0px) scale3d(1,1,1) !important;
+  -moz-transform: translate3d(30px,0px,0px) !important;
+  -ms-transform: translate3d(30px,0px,0px) !important;
+  -o-transform: translate3d(30px,0px,0px) !important; 
+  transform: translate3d(30px, 0px, 0px) !important;
 
   -webkit-transition: none !important;
   -moz-transition: none !important;
