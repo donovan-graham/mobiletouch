@@ -131,15 +131,19 @@ export default Ember.Mixin.create({
           this.targetElement = this.lastElement;
 
           // required to move item to last node for some reason
-          this.dragContainer.insertBefore(this.activeElement, targetElement);
+          this.dragContainer.insertBefore(this.activeElement, this.targetElement);
 
         } else { 
 
           this.targetElement = document.elementFromPoint(event.center.x,event.center.y);
           
-          // since we are moving nested nodes we need to make sure were using the right parent
-          if (this.targetElement === this.activeElement || this.targetElement.parentNode !== this.dragContainer) {
-            this.targetElement = null;
+          if (this.targetElement) {
+
+            // since we are moving nested nodes we need to make sure were using the right parent
+            if (this.targetElement === this.activeElement || this.targetElement.parentNode !== this.dragContainer) {
+              this.targetElement = null;
+            }
+            
           }
         }
       }
