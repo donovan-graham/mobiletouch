@@ -10,6 +10,9 @@ export default Ember.Component.extend(PanElement, {
   width: 240, // pixels
   duration: 240, // milli-seconds
 
+  items: [],
+  itemAction: null,
+
   overlayElement: null,
 
   panElementId: null,
@@ -26,11 +29,32 @@ export default Ember.Component.extend(PanElement, {
   }.on('willDestroyElement'),
 
 
+  // _yield: function(context, options, morph, blockArguments) {
+  //   var view = options.data.view;
+  //   var parentView = this._parentView;
+  //   var template = get(this, 'template');
+
+  //   if (template) {
+  //     Ember.assert("A Component must have a parent view in order to yield.", parentView);
+
+  //     view.appendChild(View, {
+  //       isVirtual: true,
+  //       tagName: '',
+  //       template: template,
+  //       _blockArguments: blockArguments,
+  //       _contextView: parentView,
+  //       _morph: morph,
+  //       context: get(parentView, 'context'),
+  //       controller: get(parentView, 'controller')
+  //     });
+  //   }
+  // },
+
+
+  action: 'navTo',
 
   actions: {
     toggleMenu: function() {
-      console.log('toggleMenu');
-
       this.toggleProperty('panOpen');
 
       if (this.rafPanId) {
@@ -41,6 +65,20 @@ export default Ember.Component.extend(PanElement, {
       if (!this.rafSlideId) {
         this.rafSlideId = window.requestAnimationFrame(this.animateHorizontalSlide.bind(this));
       }
+    },
+
+    sendAction: function(index) {
+      var item = this.get('items').objectAt(index);
+
+      var action  = item.get('action');
+      var params  = item.get('params');
+      
+      if (action) {
+        this.set('itemAction', action);
+        this.sendAction('itemAction', params)
+      }  
+
+      this.send('toggleMenu');
     }
   }
 

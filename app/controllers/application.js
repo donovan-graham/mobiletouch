@@ -8,6 +8,12 @@ export default Ember.Controller.extend({
 
   appFooterMenuItems: ['foot 1', 'foot 2', 'foot 3', 'foot 4', 'foot 5'],
 
+  sideMenuItems: [
+    Ember.Object.create({ name: "Default List", action: "navToRoute", params: "list"}),
+    Ember.Object.create({ name: "Drag List", action: "navToRoute", params: "drag-list" }),
+    Ember.Object.create({ name: "Another item" }),
+  ],
+
   actions: {
    
     toggleHeaderMenu: function() {
@@ -24,6 +30,10 @@ export default Ember.Controller.extend({
 
     removeItem: function() {
       this.set('appSubMenuItems', this.get('appSubMenuItems').slice(0,-1));
+    },
+
+    navToRoute: function(routeName) {
+      this.transitionToRoute(routeName);
     }
 
   }

@@ -1,2 +1,7 @@
 <div class="side-menu-button" {{action 'toggleMenu'}}>X</div>
-{{yield}}
+
+<ul>
+  {{#each items as |item index|}}
+    <li {{action "sendAction" index}}>{{item.name}}</li>
+  {{/each}}
+</ul>
