@@ -203,6 +203,10 @@ h1{
     padding: 10px;
     font-size:16px;
     color: white;
+    
+    &.active {
+      background-color: lightgreen;
+    }
 
     a {
       color: white;

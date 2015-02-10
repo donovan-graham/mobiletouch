@@ -1,11 +1,10 @@
-<side-menu panOpen={{sideMenuOpen}} isPanning={{sideMenuIsPanning}} path={{currentPath}}>
+<side-menu panOpen={{sideMenuOpen}} isPanning={{sideMenuIsPanning}} routeName={{currentRouteName}}>
   <ul>
-    <li {{action "navToRoute" "list"}}>Default list</li>
-    <li {{action "navToRoute" "drag-list"}}>Drag list</li>
-    <li {{action "navToRoute"}}> another </li>
+    <side-menu-item action="gotoDefaultList" routeName={{currentRouteName}} pattern="^list">Default List</side-menu-item>
+    <side-menu-item action="gotoDragList" routeName={{currentRouteName}} pattern="^drag-list">Drag List</side-menu-item>
+    <side-menu-item >Placeholder item</side-menu-item>
   </ul>
 </side-menu>
-
 
 <app-overlay id="app-overlay" isActive={{appOverlayIsActive}} />
 

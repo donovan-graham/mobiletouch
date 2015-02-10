@@ -21,43 +21,13 @@ export default Ember.Controller.extend({
   // ],
 
 
-  // observeCurrentPath: function() {
-  //   var path = this.get('currentPath');
-  //   console.log('path changed to: ', path);
-  // }.observes('currentPath'),
+  observeCurrentPath: function() {
+    var path = this.get('currentPath');
+    console.log('path changed to: ', path);
+  }.observes('currentPath'),
 
 
   actions: {
-   
-    toggleHeaderMenu: function() {
-      document.getElementById('app-header-menu').classList.toggle('active');
-    },
-
-    toggleSubHeaderMenu: function() {
-      document.getElementById('app-sub-header-menu').classList.toggle('active');
-    },
-
-    addItem: function() {
-      this.set('appSubMenuItems', this.get('appSubMenuItems').addObject(Math.random()));
-    },
-
-    removeItem: function() {
-      this.set('appSubMenuItems', this.get('appSubMenuItems').slice(0,-1));
-    },
-
-    navToRoute: function(routeName) {
-      if (routeName) {
-        var delay = 100;    // delay for application.currentPath change to propogate
-        
-        Ember.run.later(this, function() {
-          this.set('sideMenuOpen', false);
-        }, delay);
-
-        this.transitionToRoute(routeName);
-      } else {
-        this.set('sideMenuOpen', false);
-      }
-    }
 
   }
 });
