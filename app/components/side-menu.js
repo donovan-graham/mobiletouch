@@ -3,22 +3,21 @@ import PanElement from '../mixins/pan-element';
 
 export default Ember.Component.extend(PanElement, {
   classNames: ['side-menu', 'no-select'],
-  //classNameBindings: ['isPanOpen:open'],
 
   elementId: 'app-side-menu',
 
   width: 240, // pixels
   duration: 240, // milli-seconds
 
-  items: [],
-  itemAction: null,
+  // items: [],
+  // itemAction: null,
 
-  overlayElement: null,
+  // overlayElement: null,
 
-  panElementId: null,
-  panElementByName: null,
-  panElementTagName: null,
-  panElementCssSelector: null,
+  // panElementId: null,
+  // panElementByName: null,
+  // panElementTagName: null,
+  // panElementCssSelector: null,
 
   _setup: function() {
     this.overlayElement = document.getElementById('app-overlay');
@@ -51,35 +50,26 @@ export default Ember.Component.extend(PanElement, {
   // },
 
 
-  action: 'navTo',
+  // action: 'navTo',
 
   actions: {
     toggleMenu: function() {
       this.toggleProperty('panOpen');
-
-      if (this.rafPanId) {
-        window.cancelAnimationFrame(this.rafPanId);
-        this.rafPanId = null;
-      }
-
-      if (!this.rafSlideId) {
-        this.rafSlideId = window.requestAnimationFrame(this.animateHorizontalSlide.bind(this));
-      }
     },
 
-    sendAction: function(index) {
-      var item = this.get('items').objectAt(index);
+    // sendAction: function(index) {
+    //   var item = this.get('items').objectAt(index);
 
-      var action  = item.get('action');
-      var params  = item.get('params');
+    //   var action  = item.get('action');
+    //   var params  = item.get('params');
       
-      if (action) {
-        this.set('itemAction', action);
-        this.sendAction('itemAction', params)
-      }  
+    //   if (action) {
+    //     this.set('itemAction', action);
+    //     this.sendAction('itemAction', params)
+    //   }  
 
-      this.send('toggleMenu');
-    }
+    //   this.send('toggleMenu');
+    // }
   }
 
 });

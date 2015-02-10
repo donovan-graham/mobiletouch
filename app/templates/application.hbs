@@ -1,4 +1,10 @@
-<side-menu items={{sideMenuItems}} />
+<side-menu panOpen={{sideMenuOpen}} path={{currentPath}}>
+  <ul>
+    <li {{action "navToRoute" "list"}}>Default list</li>
+    <li {{action "navToRoute" "drag-list"}}>Drag list</li>
+    <li {{action "navToRoute"}}> another </li>
+  </ul>
+</side-menu>
 
 <div id="app-overlay"><!-- --></div>
 

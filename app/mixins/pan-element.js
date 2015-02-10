@@ -102,8 +102,10 @@ export default Ember.Mixin.create({
 
 
   panMove: function(event) {
-    // x cant be more origin
-    // x cant be less than orign - width
+    /*
+      x cant be more origin
+      x cant be less than orign - width
+    */
     var newX = this.startX + event.deltaX;
     newX = Math.min(Math.max(newX, -1 * this.get('width')), 0);
 
@@ -122,20 +124,7 @@ export default Ember.Mixin.create({
 
     this.startX = null; 
 
-    var absX = Math.abs(this.lastX);
-    var isOpen = (absX >= this.get('clip'));
-
-    this.set('panOpen', isOpen);
-
-    if (absX === this.get('width') || absX === 0) { 
-
-      if (this.overlayElement && !isOpen && this.overlayActive) {
-        this.overlayActive = false;
-        this.overlayElement.classList.remove('active');      
-      }
-
-      return; 
-    }
+    this.set('panOpen', (Math.abs(this.lastX) >= this.get('clip')));
 
     if (this.rafPanId) {
       window.cancelAnimationFrame(this.rafPanId);
@@ -153,6 +142,11 @@ export default Ember.Mixin.create({
   }.property('width'),
 
  
+
+
+
+
+
 
   animateHorizontalPan: function() {
 
@@ -182,6 +176,18 @@ export default Ember.Mixin.create({
 
   },
 
+  observesPanOpen: function() {    
+    if (this.rafPanId) {
+      window.cancelAnimationFrame(this.rafPanId);
+      this.rafPanId = null;
+    }
+
+    if (!this.rafSlideId) {
+      this.rafSlideId = window.requestAnimationFrame(this.animateHorizontalSlide.bind(this));
+    }
+  }.observes('panOpen'),
+
+
 
   animateHorizontalSlide: function() {
 
@@ -190,6 +196,16 @@ export default Ember.Mixin.create({
     var newX,
         relativeDuration,
         animation = 'ease-out';
+
+    if (this.overlayElement && this.get('panOpen') && !this.overlayActive) {
+      this.overlayActive = true;
+      this.overlayElement.classList.add('active');
+    } 
+
+    if (this.overlayElement && !this.get('panOpen') && this.overlayActive) {
+      this.overlayActive = false;
+      this.overlayElement.classList.remove('active');      
+    }
 
     newX = (this.get('panOpen')) ? -1 * this.get('width') : 0;
 
@@ -214,16 +230,6 @@ export default Ember.Mixin.create({
     style += 'transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
 
     this.panElement.style.cssText = style;
-
-    if (this.overlayElement && this.get('panOpen') && !this.overlayActive) {
-      this.overlayActive = true;
-      this.overlayElement.classList.add('active');
-    } 
-
-    if (this.overlayElement && !this.get('panOpen') && this.overlayActive) {
-      this.overlayActive = false;
-      this.overlayElement.classList.remove('active');      
-    }
 
   }
 
