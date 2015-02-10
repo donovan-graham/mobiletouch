@@ -18,9 +18,8 @@ export default Ember.Component.extend({
     }
   }.property('routeName', 'regex'),
 
-  click: function() {
+  tap: function() {
     this.sendAction();
   }
-
 
 });

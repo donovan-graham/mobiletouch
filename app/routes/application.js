@@ -38,25 +38,17 @@ export default Ember.Route.extend({
     },
 
     navToRoute: function(routeName) {
-      if (routeName) {
-        var delay = 100;    // delay for application.currentPath change to propogate
-        
-        Ember.run.later(this, function() {
-          this.controller.set('sideMenuOpen', false);
-        }, delay);
-
-        this.transitionTo(routeName);
-      } else {
-        this.controller.set('sideMenuOpen', false);
-      }
+      
+      this.transitionTo(routeName);
+    
     },
 
     gotoDefaultList: function() {
-      this.send('navToRoute', 'list');
+      this.transitionTo('list');
     },
 
     gotoDragList: function() {
-      this.send('navToRoute', 'drag-list');
+      this.transitionTo('drag-list');
     }
 
 
