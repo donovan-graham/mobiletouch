@@ -30,11 +30,11 @@ export default Ember.Route.extend({
     },
 
     addItem: function() {
-      this.controller.set('appSubMenuItems', this.get('appSubMenuItems').addObject(Math.random()));
+      this.controller.set('appSubMenuItems', this.controller.get('appSubMenuItems').addObject(Math.random()));
     },
 
     removeItem: function() {
-      this.controller.set('appSubMenuItems', this.get('appSubMenuItems').slice(0,-1));
+      this.controller.set('appSubMenuItems', this.controller.get('appSubMenuItems').slice(0,-1));
     },
 
     navToRoute: function(routeName) {
