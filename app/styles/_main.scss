@@ -349,27 +349,38 @@ h1{
   background-color: lightgreen; 
 }
 
+#drag-container{
+  &.active{
+    .drag-item{
+      background-color: lightgrey;
+      -webkit-transition: background-color 100ms linear;
+      -moz-transition: background-color 100ms linear;
+      -ms-transition: background-color 100ms linear;
+      -o-transition: background-color 100ms linear;
+      transition: background-color 100ms linear;
+    }
+  }
+}
+
 .drag-item{
   background: pink;
+  -webkit-transition: background-color 100ms linear;
+  -moz-transition: background-color 100ms linear;
+  -ms-transition: background-color 100ms linear;
+  -o-transition: background-color 100ms linear;
+  transition: background-color 100ms linear;
   &.is-dragging{
-
+    background-color: pink !important;
+    margin: 5px 0px;
     pointer-events: none;
-
-    -webkit-transform: scale3d(1.01,1.01,1.01);
-    -moz-transform: scale3d(1.01,1.01,1.01);
-    -ms-transform: scale3d(1.01,1.01,1.01);
-    -o-transform: scale3d(1.01,1.01,1.01); 
-    transform: scale3d(1.01,1.01,1.01);
-
     z-index: 100;
-    -webkit-box-shadow: 2px -1px 23px 1px rgba(0,0,0,0.75);
-    -moz-box-shadow: 2px -1px 23px 1px rgba(0,0,0,0.75);
-    box-shadow: 2px -1px 23px 1px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 3px 14px -5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 3px 14px -5px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 3px 14px -5px rgba(0, 0, 0, 0.75);
   }
 }
  
-.no-select
-{
+.no-select{
    user-select: none;
    -o-user-select:none;
    -moz-user-select: none;
