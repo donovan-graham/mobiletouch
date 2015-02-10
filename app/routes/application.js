@@ -19,7 +19,39 @@ export default Ember.Route.extend({
         outlet: 'modal',
         parentView: 'application'
       });
+    },
+   
+    toggleHeaderMenu: function() {
+      document.getElementById('app-header-menu').classList.toggle('active');
+    },
+
+    toggleSubHeaderMenu: function() {
+      document.getElementById('app-sub-header-menu').classList.toggle('active');
+    },
+
+    addItem: function() {
+      this.controller.set('appSubMenuItems', this.get('appSubMenuItems').addObject(Math.random()));
+    },
+
+    removeItem: function() {
+      this.controller.set('appSubMenuItems', this.get('appSubMenuItems').slice(0,-1));
+    },
+
+    navToRoute: function(routeName) {
+      
+      this.transitionTo(routeName);
+    
+    },
+
+    gotoDefaultList: function() {
+      this.transitionTo('list');
+    },
+
+    gotoDragList: function() {
+      this.transitionTo('drag-list');
     }
+
+
   }
 
 });
