@@ -1,4 +1,4 @@
-<side-menu panOpen={{sideMenuOpen}} path={{currentPath}}>
+<side-menu panOpen={{sideMenuOpen}} isPanning={{sideMenuIsPanning}} path={{currentPath}}>
   <ul>
     <li {{action "navToRoute" "list"}}>Default list</li>
     <li {{action "navToRoute" "drag-list"}}>Drag list</li>
@@ -6,7 +6,9 @@
   </ul>
 </side-menu>
 
-<div id="app-overlay"><!-- --></div>
+
+<app-overlay id="app-overlay" isActive={{appOverlayIsActive}} />
+
 
 <div id="app-content">
 

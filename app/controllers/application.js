@@ -2,8 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 
-
+  sideMenuIsPanning: false,
   sideMenuOpen: false,
+
+  appOverlayIsActive: Ember.computed.or('sideMenuIsPanning', 'sideMenuOpen'),
+
 
   appMenuItems: ['main 1', 'main 2', 'main 3'],
 

@@ -14,6 +14,7 @@ export default Ember.Mixin.create({
   rafPanId: null,
   rafSlideId: null,
 
+  isPanning: false,
   panOpen: false,
   hammer: null, 
 
@@ -98,6 +99,8 @@ export default Ember.Mixin.create({
       window.cancelAnimationFrame(this.rafSlideId);
       this.rafSlideId = null;
     }
+
+    this.set('isPanning', true);
   },
 
 
@@ -124,7 +127,10 @@ export default Ember.Mixin.create({
 
     this.startX = null; 
 
-    this.set('panOpen', (Math.abs(this.lastX) >= this.get('clip')));
+    this.setProperties({
+      isPanning: false,
+      panOpen: (Math.abs(this.lastX) >= this.get('clip'))
+    });
 
     if (this.rafPanId) {
       window.cancelAnimationFrame(this.rafPanId);
@@ -141,15 +147,23 @@ export default Ember.Mixin.create({
     return Math.round((this.get('width') / 2), 0);  
   }.property('width'),
 
- 
 
+  observePanOpen: function() {    
+    if (this.rafPanId) {
+      window.cancelAnimationFrame(this.rafPanId);
+      this.rafPanId = null;
+    }
+
+    if (!this.rafSlideId) {
+      this.rafSlideId = window.requestAnimationFrame(this.animateHorizontalSlide.bind(this));
+    }
+  }.observes('panOpen'),
 
 
 
 
 
   animateHorizontalPan: function() {
-
     this.rafPanId = null;      // release the lock
 
     var newX = this.lastX,
@@ -168,44 +182,15 @@ export default Ember.Mixin.create({
     style += 'transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
 
     this.panElement.style.cssText = style;
-
-    if (this.overlayElement && !this.overlayActive) {
-      this.overlayActive = true;
-      this.overlayElement.classList.add('active');
-    }
-
   },
-
-  observesPanOpen: function() {    
-    if (this.rafPanId) {
-      window.cancelAnimationFrame(this.rafPanId);
-      this.rafPanId = null;
-    }
-
-    if (!this.rafSlideId) {
-      this.rafSlideId = window.requestAnimationFrame(this.animateHorizontalSlide.bind(this));
-    }
-  }.observes('panOpen'),
-
 
 
   animateHorizontalSlide: function() {
-
     this.rafSlideId = null;      // release the lock
 
     var newX,
         relativeDuration,
         animation = 'ease-out';
-
-    if (this.overlayElement && this.get('panOpen') && !this.overlayActive) {
-      this.overlayActive = true;
-      this.overlayElement.classList.add('active');
-    } 
-
-    if (this.overlayElement && !this.get('panOpen') && this.overlayActive) {
-      this.overlayActive = false;
-      this.overlayElement.classList.remove('active');      
-    }
 
     newX = (this.get('panOpen')) ? -1 * this.get('width') : 0;
 
@@ -230,7 +215,6 @@ export default Ember.Mixin.create({
     style += 'transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
 
     this.panElement.style.cssText = style;
-
   }
 
 
