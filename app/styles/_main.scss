@@ -350,6 +350,7 @@ h1{
 }
 
 #drag-container{
+  border:none;
   &.active{
     .drag-item{
       background-color: lightgrey;
@@ -358,6 +359,16 @@ h1{
       -ms-transition: background-color 100ms linear;
       -o-transition: background-color 100ms linear;
       transition: background-color 100ms linear;
+    }
+  }
+  .group{
+    margin-bottom: 20px;
+    border: 1px solid purple;
+    h2{
+      margin: 0;
+      padding: 10px;
+      color: white;
+      background: purple;
     }
   }
 }

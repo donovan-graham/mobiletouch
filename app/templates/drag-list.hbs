@@ -1,9 +1,21 @@
 <div class="list-container no-select" id="drag-container">
-{{#each item in items}}
- 
-    <drag-item>
-        {{item}}
-    </drag-item>
- 
-{{/each}}
+
+  <div class="group">
+    <h2>Group 1</h2>
+    {{#each item in items}}
+      <drag-item>
+          {{item}}
+      </drag-item>
+    {{/each}}
+  </div>
+
+  <div class="group">
+    <h2>Group 2</h2>
+    {{#each item in items}}
+      <drag-item>
+          {{item}}
+      </drag-item>
+    {{/each}}
+  </div>
+
 </div>

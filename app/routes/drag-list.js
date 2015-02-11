@@ -6,7 +6,7 @@ export default Ember.Route.extend({
     var items;
 
     items = [];
-    for (var i=0; i <= 50; i++) {
+    for (var i=0; i <= 5; i++) {
       items.push(i);
     }
 
