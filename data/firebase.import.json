@@ -1,0 +1,69 @@
+{
+  "people" : {
+    "1" : {
+      "email" : "holly@example.com",
+      "first_name" : "Holly",
+      "last_name" : "Day"
+    }, 
+    "2" : {
+      "email" : "marc@example.com",
+      "first_name" : "Marc",
+      "last_name" : "Houston"
+    }, 
+    "3" : {
+      "email" : "jennifer@example.com",
+      "first_name" : "Jennifer",
+      "last_name" : "Hardy"
+    }, 
+    "4" : {
+      "email" : "george@example.com",
+      "first_name" : "George",
+      "last_name" : "Roberts"
+    }, 
+    "5" : {
+      "email" : "justin@example.com",
+      "first_name" : "Justin",
+      "last_name" : "Ross"
+    }, 
+    "6" : {
+      "email" : "scott@example.com",
+      "first_name" : "Scott",
+      "last_name" : "Lane"
+    }, 
+    "7" : {
+      "email" : "verna@example.com",
+      "first_name" : "Verna",
+      "last_name" : "Patton"
+    }, 
+    "8" : {
+      "email" : "claire@example.com",
+      "first_name" : "Claire",
+      "last_name" : "Patterson"
+    }, 
+    "9" : {
+      "email" : "patricia@example.com",
+      "first_name" : "Patricia",
+      "last_name" : "Cox"
+    }, 
+    "10" : {
+      "email" : "howard@example.com",
+      "first_name" : "Howard",
+      "last_name" : "Bell"
+    }, 
+    "11" : {
+      "email" : "jimmy@example.com",
+      "first_name" : "Jimmy",
+      "last_name" : "King"
+    }, 
+    "12" : {
+      "email" : "james@example.com",
+      "first_name" : "James",
+      "last_name" : "Taylor"
+    }, 
+    "13" : {
+      "email" : "vicky@example.com",
+      "first_name" : "Vicky",
+      "last_name" : "Myers"
+    }
+  }
+}

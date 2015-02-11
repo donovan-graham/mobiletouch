@@ -1,18 +1,19 @@
 import Ember from 'ember';
+// import ENV from '../config/environment';
 
 export default Ember.Route.extend({
   
   model: function() {
-    var items;
+    return this.store.find('person');
 
-    items = [];
-    for (var i=0; i <= 50; i++) {
-      items.push(i);
-    }
-
-    return items;
+    /*
+    var ref = new Firebase('https://' + ENV.firebase + '.firebaseio.com/people');
+    ref.on("value", function(snapshot) {
+      console.log(snapshot.val());
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+    */
   }
-
-
 
 });
