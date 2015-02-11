@@ -25,12 +25,14 @@ module.exports = function(environment) {
   };
 
 
+  // https://github.com/rwjblue/ember-cli-content-security-policy
+  // http://content-security-policy.com/
   ENV.contentSecurityPolicy = {
       'default-src': "'none'",
       'script-src': "'self' 'unsafe-inline'",
       'frame-src': "'self'",
       'font-src': "'self'",
-      'connect-src': "'self'",
+      'connect-src': "'self' https://*.firebase.com https://*.firebaseio.com wss://*.firebaseio.com",
       'img-src': "'self' data:",
       'style-src': "'self' 'unsafe-inline'", 
       'report-uri': "'http://localhost:4200'"
