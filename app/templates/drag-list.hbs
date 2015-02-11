@@ -1,9 +1,7 @@
 <div class="list-container no-select" id="drag-container">
-{{#each item in items}}
- 
+  {{#each item in items}}
     <drag-item>
-        {{item}}
+      {{item.fullName}}
     </drag-item>
- 
-{{/each}}
+  {{/each}}
 </div>

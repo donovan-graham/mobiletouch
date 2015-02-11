@@ -53,6 +53,7 @@ module.exports = function(environment) {
     }
   };
 
+  ENV.firebase = 'fiery-fire-1076';
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
