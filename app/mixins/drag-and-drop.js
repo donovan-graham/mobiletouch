@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
 
   rafInsertBeforeNodeId: null,
+  rafInsertAfterNodeId: null,
 
   hammer2: null,
   isDragging: false,
@@ -15,11 +16,13 @@ export default Ember.Mixin.create({
   panElement: null,
 
   dragContainer: null,
-  dragContainerY: null,
+  
+  totalGroups: null,
+  currentGroup: null,
 
-  parentElement: null,
-  firstElement: null,
-  lastElement: null,
+  firstGroupFirstElement: null,
+  lastGroupLastElement: null, 
+
   activeElement: null,
   targetElement: null,
 
@@ -35,7 +38,8 @@ export default Ember.Mixin.create({
     this.panElement = panElement;
 
     this.dragContainer = document.getElementById('drag-container');
-
+    this.dragContainerGroups = document.getElementsByClassName("group");
+    
     var hammer2 = new Hammer.Manager(this.get('element'));
       hammer2.add(new Hammer.Pan({ enable: false, direction: Hammer.DIRECTION_VERTICAL, threshold: 10 }));
       hammer2.add(new Hammer.Press({time: 300}));
@@ -103,68 +107,72 @@ export default Ember.Mixin.create({
     this.dragContainer.classList.remove('active');
   },
 
+  setupGroupValues: function(event) {
+    this.activeElement = event.target;
+    this.targetElement = null;
+  },
+
   panStart: function(event) {
 
-      this.set('isDragging', true);
+    this.currentGroup = $(event.target).closest('.group')[0];
+    
+    if ($.inArray(this.currentGroup, this.dragContainerGroups) < 0) { return false; }
+   
+    this.setupGroupValues(event);
 
-      this.dragContainerY = this.dragContainer.getBoundingClientRect(); 
+    this.firstGroupFirstElement = this.dragContainerGroups[0].getElementsByTagName('div')[0];
 
-      this.parentElement = event.target.parentNode;
-      this.activeElement = event.target;
-      this.targetElement = null;
+    this.totalGroups = this.dragContainerGroups.length;
+    this.lastGroupLastElement = this.dragContainerGroups[(this.totalGroups -1)].lastElementChild;
+    
+    this.set('isDragging', true);
 
-      this.firstElement = event.target.parentNode.childNodes[0];
-      this.lastElement = event.target.parentNode.childNodes.lastChild;
   },
 
 
   panMove: function(event) {
-            
-      if (event.target.parentNode === this.dragContainer) {
+        
+    // this.currentGroup = $(event.target).closest('.group')[0];
+    this.targetElement = document.elementFromPoint(event.center.x,event.center.y);
 
-        if (event.center.y <= this.dragContainerY.top) {
+    // stop if targetElement is not a related drag item we dont care
+    if (!this.targetElement.classList.contains('drag-item')) { return; }
 
-          this.targetElement = this.firstElement;
+    //check if activeElement isnt targeElement (unsure if this is still required)
+    if (this.targetElement === this.activeElement) { return; }
 
-        } else if (event.center.y >= this.dragContainerY.bottom){
-
-          this.targetElement = this.lastElement;
-
-          // required to move item to last node for some reason
-          this.dragContainer.insertBefore(this.activeElement, targetElement);
-
-        } else { 
-
-          this.targetElement = document.elementFromPoint(event.center.x,event.center.y);
-          
-          // since we are moving nested nodes we need to make sure were using the right parent
-          if (this.targetElement === this.activeElement || this.targetElement.parentNode !== this.dragContainer) {
-            this.targetElement = null;
-          }
-        }
+    // stop if activeElement is first/last in first/last group and moving out of area
+    if ((this.firstGroupFirstElement === this.activeElement && event.direction === 8) || (this.lastGroupLastElement === this.activeElement && event.direction === 16)){ return; }  
+      
+    if (this.targetElement === this.targetElement.parentNode.lastElementChild) {
+      if (!this.rafInsertAfterNodeId) {
+        this.rafInsertAfterId = window.requestAnimationFrame(this.insertAfterNode.bind(this));
       }
+      return;
+    }
 
-      if (!this.rafInsertBeforeNodeId) {
-        this.rafInsertBeforeId = window.requestAnimationFrame(this.insertBeforeNode.bind(this));
-      }
+    if (!this.rafInsertBeforeNodeId) {
+      this.rafInsertBeforeId = window.requestAnimationFrame(this.insertBeforeNode.bind(this));
+    }
     
+  },
+
+  insertAfterNode: function() {
+    if (this.targetElement) {
+      $(this.activeElement).insertAfter(this.targetElement);
+    }
+    this.rafInsertAfterId = null;
   },
 
   insertBeforeNode: function() {
-    
-    var activeElement = this.activeElement;
-    var targetElement = this.targetElement;
-
-    if (targetElement) {
-      this.dragContainer.insertBefore(activeElement, targetElement);
+    if (this.targetElement) {
+      $(this.targetElement).closest('.group')[0].insertBefore(this.activeElement, this.targetElement);
     }
-
     this.rafInsertBeforeId = null;
-
   },
 
 
-  panEnd: function(event) {
+  panEnd: function() {
 
       this.dragContainer.classList.remove('active');
 
@@ -177,6 +185,11 @@ export default Ember.Mixin.create({
       if (this.rafInsertBeforeNodeId) {
         window.cancelAnimationFrame(this.rafInsertBeforeNodeId);
         this.rafInsertBeforeNodeId = null;
+      }
+
+      if (this.rafInsertAfterNodeId) {
+        window.cancelAnimationFrame(this.rafInsertAfterNodeId);
+        this.rafInsertAfterNodeId = null;
       }
 
   }

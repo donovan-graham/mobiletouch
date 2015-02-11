@@ -1,7 +1,23 @@
 <div class="list-container no-select" id="drag-container">
-  {{#each item in items}}
-    <drag-item>
-      {{item.fullName}}
-    </drag-item>
-  {{/each}}
+
+  <h2 class="group-header">Group 1</h2>
+  <div class="group">
+    {{#each item in items}}
+      <drag-item>
+          {{item.fullName}}
+      </drag-item>
+    {{/each}}
+    {{!-- <div class="drag-item placeholder"></div> --}}
+  </div>
+
+  <h2 class="group-header">Group 2</h2>
+  <div class="group">
+    {{#each item in items}}
+      <drag-item>
+          {{item.fullName}}
+      </drag-item>
+    {{/each}}
+   {{!--  <div class="drag-item placeholder"></div> --}}
+  </div>
+
 </div>
