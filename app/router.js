@@ -7,7 +7,8 @@ var Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route("list", { path: "/" });
-  this.route("drag-list", { path: "drag-list" });
+  this.route("drag-list");
+  this.route("five-hundred");
 });
 
 export default Router;

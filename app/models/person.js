@@ -17,7 +17,7 @@ var Person = DS.Model.extend({
 if (ENV.useFixtureData) {
 
   var fixtures = [];
-  for (var i=1; i <= 100; i++) {
+  for (var i=1; i <= 30; i++) {
     fixtures.push({ id: i, email: "test" + i + "@example.com", firstName: "Test", lastName: i });
   }
 

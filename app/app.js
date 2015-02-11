@@ -15,7 +15,7 @@ loadInitializers(App, config.modulePrefix);
 
 
 Ember.Router.reopen({
-  transitionTo: function(name, context) {
+  transitionTo: function(/*name, context*/) {
     this.container.lookup('controller:application').send('closeSideMenu');
     var router = this.router;
     return router.transitionTo.apply(router, arguments);
@@ -24,7 +24,9 @@ Ember.Router.reopen({
   resetScroll: function() {
     window.scrollTo(0,0);
   }.on('willTransition'),
+
 });
+
 
 /* 
 // Moved into ember-mobiletouch, and configured in environment.js 

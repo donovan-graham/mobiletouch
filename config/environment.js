@@ -13,7 +13,8 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
 
         'ember-htmlbars-component-generation': true,
-        'ember-htmlbars-attribute-syntax': true
+        'ember-htmlbars-attribute-syntax': true,
+        'ember-htmlbars-each-with-index': true
       }
     },
 
@@ -59,7 +60,6 @@ module.exports = function(environment) {
 
   ENV.useFirebase != ENV.useFixtureData;
   ENV.firebase = 'mobiletouch';
-
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;

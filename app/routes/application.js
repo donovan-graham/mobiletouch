@@ -37,10 +37,8 @@ export default Ember.Route.extend({
       this.controller.set('appSubMenuItems', this.controller.get('appSubMenuItems').slice(0,-1));
     },
 
-    navToRoute: function(routeName) {
-      
-      this.transitionTo(routeName);
-    
+    navToRoute: function(routeName) {      
+      this.transitionTo(routeName);    
     },
 
     gotoDefaultList: function() {
@@ -49,6 +47,10 @@ export default Ember.Route.extend({
 
     gotoDragList: function() {
       this.transitionTo('drag-list');
+    },
+
+    goto500List: function() {
+      this.transitionTo('five-hundred');     
     }
 
 
