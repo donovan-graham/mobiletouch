@@ -58,7 +58,7 @@ module.exports = function(environment) {
   ENV.useFixtureData = true; /* for local development */
 
   ENV.useFirebase != ENV.useFixtureData;
-  ENV.firebase = 'fiery-fire-1076';
+  ENV.firebase = 'mobiletouch';
 
 
   if (environment === 'development') {
