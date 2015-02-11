@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import ENV from '../config/environment';
+// import ENV from '../config/environment';
 
 export default Ember.Route.extend({
   
   model: function() {
-    return this.store.find('people')
+    return this.store.find('person');
 
     /*
     var ref = new Firebase('https://' + ENV.firebase + '.firebaseio.com/people');
