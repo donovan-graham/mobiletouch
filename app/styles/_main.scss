@@ -361,15 +361,15 @@ h1{
       transition: background-color 100ms linear;
     }
   }
+  .group-header{
+    margin: 0;
+    padding: 10px;
+    color: white;
+    background: purple;
+  }
   .group{
     margin-bottom: 20px;
     border: 1px solid purple;
-    h2{
-      margin: 0;
-      padding: 10px;
-      color: white;
-      background: purple;
-    }
   }
 }
 

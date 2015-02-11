@@ -17,8 +17,9 @@ export default Ember.Mixin.create({
   dragContainer: null,
   dragContainerY: null,
   currentGroup: null,
-
-  parentElement: null,
+  currentGroupIndex: null,
+  currentGroupXY: null,
+  
   firstElement: null,
   lastElement: null,
   activeElement: null,
@@ -105,56 +106,81 @@ export default Ember.Mixin.create({
     this.dragContainer.classList.remove('active');
   },
 
+  setupGroupValues: function(event) {
+    
+    this.currentGroupXY = this.currentGroup.getBoundingClientRect();
+    this.activeElement = event.target;
+    this.targetElement = null;
+    
+  },
+
   panStart: function(event) {
 
-      if ($.inArray(event.target.parentNode, this.dragContainerGroups) >= 0) {
+    if ($.inArray(event.target.parentNode, this.dragContainerGroups) >= 0) {
+      
+      this.currentGroup = event.target.parentNode;
+      this.currentGroupIndex = $.inArray(this.currentGroup, this.dragContainerGroups) +1;
+      this.setupGroupValues(event);
 
-        this.currentGroup = event.target.parentNode;
-        this.currentGroupXY = this.currentGroup.getBoundingClientRect();
+    } else {
+      return false;
+    }
 
-        this.parentElement = event.target.parentNode;
-        this.activeElement = event.target;
-        this.targetElement = null;
-        this.firstElement = event.target.parentNode.childNodes[0];
-        this.lastElement = event.target.parentNode.childNodes.lastChild;
+    this.set('isDragging', true);
 
-      } else {
-        return false;
-      }
-
-      this.set('isDragging', true);
-
-      // this.dragContainerY = this.dragContainer.getBoundingClientRect(); 
-
-  
   },
 
 
   panMove: function(event) {
 
 
-      if ($.inArray(event.target.parentNode, this.dragContainerGroups) >= 0) {
-
-        // this.currentGroup = event.target.parentNode;
-
+      if (this.currentGroupIndex >= 0) {
+  
         if (event.center.y <= this.currentGroupXY.top) {
 
+          this.firstElement = this.currentGroup.firstChild.nextElementSibling;
           this.targetElement = this.firstElement;
           console.log('too high');
 
         } else if (event.center.y >= this.currentGroupXY.bottom){
 
+          this.lastElement = this.currentGroup.childNodes.lastChild;
           this.targetElement = this.lastElement;
-          console.log('too low');
-
           // required to move item to last node for some reason
           this.currentGroup.insertBefore(this.activeElement, this.targetElement);
 
+          if (this.currentGroupIndex === this.dragContainerGroups.length) {
+            console.log('last group');
+            return false;
+          } else {
+            console.log('still groups beneath');
+
+            this.targetElement = document.elementFromPoint(event.center.x,event.center.y);
+
+            var nextGroup = this.dragContainerGroups[this.currentGroupIndex];
+
+            if (this.targetElement === nextGroup.firstChild.nextElementSibling){
+         
+              this.currentGroup = nextGroup;
+              this.currentGroupIndex = this.currentGroupIndex + 1;
+
+              this.setupGroupValues(event);
+
+              // debugger;
+              this.currentGroup.insertBefore(this.activeElement, this.currentGroup.firstChild.nextElementSibling);
+
+            } else {
+              return false;
+            }
+   
+
+          }
+        
+
         } else { 
 
-          // debugger;
           this.targetElement = document.elementFromPoint(event.center.x,event.center.y);
-          
+
           if (this.targetElement) {
 
             // since we are moving nested nodes we need to make sure were using the right parent
@@ -173,12 +199,9 @@ export default Ember.Mixin.create({
   },
 
   insertBeforeNode: function() {
-    
-    var activeElement = this.activeElement;
-    var targetElement = this.targetElement;
 
-    if (targetElement) {
-      this.currentGroup.insertBefore(activeElement, targetElement);
+    if (this.targetElement) {
+      this.currentGroup.insertBefore(this.activeElement, this.targetElement);
     }
 
     this.rafInsertBeforeId = null;
