@@ -152,7 +152,6 @@ export default Ember.Mixin.create({
     }
 
     if (!this.rafInsertBeforeNodeId) {
-      console.log('before;')
       this.rafInsertBeforeId = window.requestAnimationFrame(this.insertBeforeNode.bind(this));
     }
     
