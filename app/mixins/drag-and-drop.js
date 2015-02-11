@@ -114,9 +114,9 @@ export default Ember.Mixin.create({
 
   panStart: function(event) {
 
-    this.currentGroup = $(event.target).closest('.group')[0];
+    this.currentGroup = Ember.$(event.target).closest('.group')[0];
     
-    if ($.inArray(this.currentGroup, this.dragContainerGroups) < 0) { return false; }
+    if (Ember.$.inArray(this.currentGroup, this.dragContainerGroups) < 0) { return false; }
    
     this.setupGroupValues(event);
 
@@ -132,7 +132,7 @@ export default Ember.Mixin.create({
 
   panMove: function(event) {
         
-    // this.currentGroup = $(event.target).closest('.group')[0];
+    // this.currentGroup = Ember.$(event.target).closest('.group')[0];
     this.targetElement = document.elementFromPoint(event.center.x,event.center.y);
 
     // stop if targetElement is not a related drag item we dont care
@@ -159,14 +159,14 @@ export default Ember.Mixin.create({
 
   insertAfterNode: function() {
     if (this.targetElement) {
-      $(this.activeElement).insertAfter(this.targetElement);
+      Ember.$(this.activeElement).insertAfter(this.targetElement);
     }
     this.rafInsertAfterId = null;
   },
 
   insertBeforeNode: function() {
     if (this.targetElement) {
-      $(this.targetElement).closest('.group')[0].insertBefore(this.activeElement, this.targetElement);
+      Ember.$(this.targetElement).closest('.group')[0].insertBefore(this.activeElement, this.targetElement);
     }
     this.rafInsertBeforeId = null;
   },

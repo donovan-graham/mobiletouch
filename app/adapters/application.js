@@ -11,6 +11,7 @@ if (ENV.useFixtureData) {
 } else {
 
   var fmt = Ember.String.fmt;
+  var Promise = Ember.RSVP.Promise;
 
   ApplicationAdapter = DS.FirebaseAdapter.extend({
   

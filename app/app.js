@@ -15,7 +15,7 @@ loadInitializers(App, config.modulePrefix);
 
 
 Ember.Router.reopen({
-  transitionTo: function(name, context) {
+  transitionTo: function(/*name, context*/) {
     this.container.lookup('controller:application').send('closeSideMenu');
     var router = this.router;
     return router.transitionTo.apply(router, arguments);

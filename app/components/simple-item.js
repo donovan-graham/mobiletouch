@@ -8,8 +8,8 @@ export default Ember.Component.extend({
   //   return this.get('content') + " " + this.get('content');
   // }.property('content'),
 
-  isOdd: function() {
-    return (this.get('content') % 2) === 0;
+  isEven: function() {
+    return (parseInt(this.get('content')) % 2) === 0;
   }.property('content'),
 
 });
