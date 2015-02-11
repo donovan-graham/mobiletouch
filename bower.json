@@ -4,7 +4,7 @@
     "handlebars": "2.0.0",
     "jquery": "^2.1.3",
     "ember": "components/ember#canary",
-    "ember-data": "1.0.0-beta.12",
+    "ember-data": "1.0.0-beta.14",    
     "ember-resolver": "~0.1.11",
     "loader.js": "ember-cli/loader.js#1.0.1",
     "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
@@ -13,12 +13,12 @@
     "ember-qunit": "0.1.8",
     "ember-qunit-notifications": "0.0.5",
     "qunit": "~1.17.1",
-    "hammerjs": "~2.0.4",
-    "emberfire": "~1.3.2"
+    "emberfire": "~1.3.2",
+    "hammerjs": "~2.0.4"
   },
   "resolutions": {
     "ember": "canary",
-    "ember-data": "1.0.0-beta.12",
+    "ember-data": "1.0.0-beta.14",
     "jquery": "2.1.3"
-  }
+  }  
 }

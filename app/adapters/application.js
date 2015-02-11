@@ -2,6 +2,8 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import ENV from '../config/environment';
 
+var fmt = Ember.String.fmt;
+
 export default DS.FirebaseAdapter.extend({
 
   firebase: new window.Firebase('https://' + ENV.firebase + '.firebaseio.com'),
@@ -11,13 +13,14 @@ export default DS.FirebaseAdapter.extend({
   },
 
   /* Override back to .on method instead of .once, because .once fetches data twice */
+ 
   findAll: function(store, type) {
     var adapter = this;
     var ref = this._getRef(type);
 
     return new Promise(function(resolve, reject) {
       // Listen for child events on the type
-      
+ 
       /* ref.once('value', function(snapshot) { */
       ref.on('value', function(snapshot) {
         if (!adapter._findAllHasEventsForType(type)) {
@@ -35,7 +38,6 @@ export default DS.FirebaseAdapter.extend({
       });
     }, fmt('DS: FirebaseAdapter#findAll %@ to %@', [type, ref.toString()]));
   },
-
 
 
 });
