@@ -19,7 +19,7 @@ export default Ember.Mixin.create({
   currentGroup: null,
   currentGroupIndex: null,
   currentGroupXY: null,
-  
+
   firstElement: null,
   lastElement: null,
   activeElement: null,
@@ -140,7 +140,37 @@ export default Ember.Mixin.create({
 
           this.firstElement = this.currentGroup.firstChild.nextElementSibling;
           this.targetElement = this.firstElement;
-          console.log('too high');
+
+          if (this.currentGroupIndex === 1) {
+            console.log('top most group');
+            return false;
+          } else {
+            console.log('still groups above');
+
+            this.targetElement = document.elementFromPoint(event.center.x,event.center.y);
+
+            var previousGroup = this.dragContainerGroups[(this.currentGroupIndex - 2)];
+
+            // debugger;
+            if (this.targetElement === previousGroup.lastChild.previousElementSibling){
+         
+              this.currentGroup = previousGroup;
+              this.currentGroupIndex = this.currentGroupIndex;
+
+              this.setupGroupValues(event);
+
+              // debugger;
+              this.currentGroup.appendChild(this.activeElement);
+      
+
+            } else {
+              return false;
+            }
+   
+
+          }
+
+
 
         } else if (event.center.y >= this.currentGroupXY.bottom){
 
@@ -150,7 +180,7 @@ export default Ember.Mixin.create({
           this.currentGroup.insertBefore(this.activeElement, this.targetElement);
 
           if (this.currentGroupIndex === this.dragContainerGroups.length) {
-            console.log('last group');
+            console.log('bottom most group');
             return false;
           } else {
             console.log('still groups beneath');
