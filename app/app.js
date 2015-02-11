@@ -24,7 +24,9 @@ Ember.Router.reopen({
   resetScroll: function() {
     window.scrollTo(0,0);
   }.on('willTransition'),
+
 });
+
 
 /* 
 // Moved into ember-mobiletouch, and configured in environment.js 

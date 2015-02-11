@@ -27,7 +27,7 @@ export default Ember.Controller.extend({
 
   actions: {
     closeSideMenu: function() {
-      var delay = 200;    // delay for application.currentPath change to propogate
+      var delay = 0;    // delay for application.currentPath change to propogate
       
       Ember.run.later(this, function() {
         this.set('sideMenuOpen', false);
