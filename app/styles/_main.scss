@@ -368,8 +368,21 @@ h1{
     background: purple;
   }
   .group{
+    min-height: 40px;
     margin-bottom: 20px;
     border: 1px solid purple;
+    position: relative;
+    .placeholder{
+      content: 'empty group';
+      position: relative;
+      display: block;
+      text-align: center;
+      background: lightgrey;
+      width: 100%;
+      z-index: 0;
+      bottom: 0px;
+      height: 3px;
+    }
   }
 }
 
@@ -380,6 +393,8 @@ h1{
   -ms-transition: background-color 100ms linear;
   -o-transition: background-color 100ms linear;
   transition: background-color 100ms linear;
+  position: relative;
+  z-index: 1;
   &.is-dragging{
     background-color: pink !important;
     margin: 5px 0px;
