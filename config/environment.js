@@ -56,7 +56,7 @@ module.exports = function(environment) {
     }
   };
 
-  ENV.useFixtureData = true; /* for local development */
+  ENV.useFixtureData = false; /* for local development */
 
   ENV.useFirebase != ENV.useFixtureData;
   ENV.firebase = 'mobiletouch';

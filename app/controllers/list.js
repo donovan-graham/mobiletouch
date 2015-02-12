@@ -8,7 +8,6 @@ export default Ember.ArrayController.extend({
       Ember.$('.list-container')[0].classList.toggle('is-checking');
       return;
     }
-
   }
 
 });

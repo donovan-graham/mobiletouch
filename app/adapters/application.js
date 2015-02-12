@@ -40,12 +40,14 @@ if (ENV.useFixtureData) {
             adapter._updateRecordCacheForType(type, payload);
             results.push(payload);
           });
+
           resolve(results);
         }, function(error) {
           reject(error);
         });
       }, fmt('DS: FirebaseAdapter#findAll %@ to %@', [type, ref.toString()]));
     },
+
   });
 
 }
