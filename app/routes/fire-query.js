@@ -63,12 +63,15 @@ export default Ember.Route.extend({
           console.log("User email:", email);
 
 
+          // https://fiery-fire-1076.firebaseio.com/people.json?&orderBy=%22email%22&equalTo=%22marc@example.com%22&print=pretty
+
           // var newRef = new Firebase('https://fiery-fire-1076.firebaseio.com/people')
 
           ref.child('people')
             .orderByChild("email")
-            .startAt(email)
-            .endAt(email)
+            // .startAt(email)
+            // .endAt(email)
+            .equalTo(email)
             .limitToFirst(1)
             .on('value', function(snapshot) {
 
