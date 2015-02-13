@@ -9,6 +9,7 @@ Router.map(function() {
   this.route("list", { path: "/" });
   this.route("drag-list");
   this.route("five-hundred");
+  this.route("infinite");
 });
 
 export default Router;

@@ -51,6 +51,10 @@ export default Ember.Route.extend({
 
     goto500List: function() {
       this.transitionTo('five-hundred');     
+    },
+
+    gotoInfiniteList: function() {
+      this.transitionTo('infinite');       
     }
 
 

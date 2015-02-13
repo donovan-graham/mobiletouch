@@ -1,0 +1,18 @@
+
+
+<h1>hello</h1>
+
+<hr>
+
+<ul>
+{{#each person in pagedContent}}
+  <simple-item content={{person}} />
+{{/each}}
+</ul>
+
+<hr>
+
+
+<button {{action "loadNext"}}>More</button>
+<button {{action "dropItems"}}>Drop</button>
+<button {{action "addItems"}}>Add</button>
