@@ -1,0 +1,18 @@
+{
+  "rules": {
+    ".read": "auth != null && auth.provider == 'password'",
+
+    "people": {
+      ".indexOn": ["email", "is_active"],
+
+      /*
+      // https://mobiletouch.firebaseio.com/people/1.json?&print=pretty    - ALLOWED
+      // https://mobiletouch.firebaseio.com/people/10.json?&print=pretty   - Not Allowed
+      // https://mobiletouch.firebaseio.com/people.json?&print=pretty      - Not Allowed
+      "$peopleid": {
+        ".read": "data.child('is_active').val() === true || data.child('is_active').val() === 'true'"
+      }
+      */
+    }
+  }
+}

@@ -27,6 +27,18 @@ export default Ember.Route.extend({
       });
     },
 
+    activePeople: function () {
+      console.log(">>> activePeople");
+      var query = {
+        orderBy: 'is_active',
+        startAt: false       
+      };
+
+      this.store.find('person', query).then(function(people) {
+        console.log('active:', people);
+      });
+    },
+
 
     authenticate: function() {
 
@@ -58,7 +70,7 @@ export default Ember.Route.extend({
             .startAt(email)
             .endAt(email)
             .limitToFirst(1)
-            .once('value', function(snapshot) {
+            .on('value', function(snapshot) {
 
               // ref.on("child_changed", function(snapshot) {
               //   var changedPost = snapshot.val();

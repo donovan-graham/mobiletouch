@@ -6,7 +6,7 @@ var Person = DS.Model.extend({
   firstName:            DS.attr('string'),
   lastName:             DS.attr('string'),
   email:                DS.attr('string'),
-  isAdmin:              DS.attr('boolean', { defaultValue: false }),
+  isActive:             DS.attr('boolean', { defaultValue: false }),
 
   fullName: function() {
     return this.get('firstName') + ' ' + this.get('lastName');
