@@ -17,6 +17,72 @@
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 
     <meta name="msapplication-tap-highlight" content="no" />
+
+
+
+<style>
+
+/*
+  #container-wrap {
+    display: block;
+    position: relative;
+    left: 0;
+    transfrom: translate3d(0px,0px,0px);
+    transition: transform 400ms linear;
+  }
+
+  #container-wrap.child1 {
+    left: 0;
+  }
+
+  #container-wrap.child2 {
+    left: -100%;
+  }
+
+  #container-wrap.child3 {
+    left: -200%;
+  }
+
+  #container-wrap.child4 {
+    left: -300%;
+  }
+
+*/
+
+  .parent {
+    background: papayawhip;
+    color: black; 
+    width: 100%;
+    position: absolute;
+    left:0;
+    top: 85px;
+    bottom:0;
+    transition: left 200ms linear;
+  }
+
+   .parent .child {
+    background: orange;
+    width: 100%;
+    position: absolute;
+    left: 100%;
+    top:0;
+    bottom:0;
+  }
+  
+
+   .parent .child .child {
+    background: orangered;
+  }
+
+   .parent .child .child .child {
+    background: red;
+  }
+
+
+
+</style>
+
+
   </head>
   <body>
     {{content-for 'body'}}
