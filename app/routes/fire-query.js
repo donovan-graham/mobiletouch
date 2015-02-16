@@ -7,9 +7,10 @@ export default Ember.Route.extend({
   actions: {
 
     dinoHeight: function() {
-     console.log(">>> dinoHeights");
- 
+      console.log(">>> dinoHeights");
+
       var ref = new Firebase("https://dinosaur-facts.firebaseio.com/");
+
       ref.orderByChild("height").on("child_added", function(snapshot) {
         console.log(snapshot.key() + " was " + snapshot.val().height + " meters tall");
       });
@@ -31,11 +32,11 @@ export default Ember.Route.extend({
       console.log(">>> activePeople");
       var query = {
         orderBy: 'is_active',
-        startAt: false       
+        equalTo: true       
       };
 
       this.store.find('person', query).then(function(people) {
-        console.log('active:', people);
+        console.log('active:', people.get('length'));
       });
     },
 
