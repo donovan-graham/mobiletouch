@@ -27,8 +27,6 @@ if (ENV.useFixtureData) {
 
     /* Override back to .on method instead of .once, because .once fetches data twice */
     findAll: function(store, type) {
-      console.log(">>> findAll");
-
       var adapter = this;
       var ref = this._getRef(type);
 
