@@ -1,6 +1,7 @@
 {
   "rules": {
     ".read": "auth != null && auth.provider == 'password'",
+    ".write": false,
 
     "people": {
       ".indexOn": ["email", "is_active"],

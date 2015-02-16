@@ -9,25 +9,25 @@
     "2" : {
       "email" : "marc@example.com",
       "first_name" : "Marc",
-      "last_name" : "Houston"
+      "last_name" : "Houston",
       "is_active" : true,
     }, 
     "3" : {
       "email" : "jennifer@example.com",
       "first_name" : "Jennifer",
-      "last_name" : "Hardy"
+      "last_name" : "Hardy",
       "is_active" : true,
     }, 
     "4" : {
       "email" : "george@example.com",
       "first_name" : "George",
-      "last_name" : "Roberts"
+      "last_name" : "Roberts",
       "is_active" : true,
     }, 
     "5" : {
       "email" : "justin@example.com",
       "first_name" : "Justin",
-      "last_name" : "Ross"
+      "last_name" : "Ross",
       "is_active" : true,
     }, 
     "6" : {
