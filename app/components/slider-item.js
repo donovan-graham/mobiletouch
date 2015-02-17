@@ -22,9 +22,7 @@ export default Ember.Component.extend({
 
     var hammer = new Hammer.Manager(this.get('element'));
       hammer.add(new Hammer.Pan({ enable: true, direction: Hammer.DIRECTION_HORIZONTAL, threshold: 10 }));
-      hammer.add(new Hammer.Press({ enable: true, time: 0 }));
 
-      hammer.on('press', this.press.bind(this));
       hammer.on('panstart', this.panStart.bind(this));
       hammer.on('panmove', this.panMove.bind(this));
       hammer.on('panend', this.panEnd.bind(this));
@@ -104,14 +102,11 @@ export default Ember.Component.extend({
     var newX = this.lastX,
         style = '';
 
-
     style += '-webkit-transition: none; ';
     style += '-moz-transition: none; ';
     style += '-ms-transition: none; ';
     style += '-o-transition: none; ';
     style += 'transition: none; ';
-
-    debugger;
 
     style += '-webkit-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
     style += '-moz-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
