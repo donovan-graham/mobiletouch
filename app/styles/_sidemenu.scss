@@ -1,0 +1,94 @@
+.side-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  left: 100%;
+  width: 200px; /* 240 - 20 - 20 */
+  padding: 20px;
+  z-index: 200;
+
+  /*overflow: hidden;*/
+
+  background-color: green;
+  color: white;
+
+  -webkit-transform: translate3d(0px,0px,0px) scale3d(1,1,1);
+  -moz-transform: translate3d(0px,0px,0px);
+  -ms-transform: translate3d(0px,0px,0px);
+  -o-transform: translate3d(0px,0px,0px);
+  transform: translate3d(0px,0px,0px);
+
+  li {
+    padding: 10px;
+    font-size:16px;
+    color: white;
+    
+    &.active {
+      background-color: lightgreen;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+
+}
+
+.side-menu-button {
+  position: absolute;
+  top: 0;
+  left: -50px;
+  width: 50px;
+  height: 50px;
+ 
+  display: block;
+  z-index: 210;
+
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+
+  background-color: green;
+  color: white;
+}
+
+#app-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 190;
+  background-color: #1b1b1b;
+  opacity: 0;
+
+  -webkit-transform: translate3d(-10000px,0px,0px);
+  -moz-transform: translate3d(-10000px,0px,0px);
+  -ms-transform: translate3d(-10000px,0px,0px);
+  -o-transform: translate3d(-10000px,0px,0px);
+  transform: translate3d(-10000px,0px,0px);
+  
+  -webkit-transition: opacity 200ms linear, -webkit-transform 0ms linear 200ms;
+  -moz-transition: opacity 200ms linear, -moz-transform 0ms linear 200ms;
+  -ms-transition: opacity 200ms linear, -ms-transform 0ms linear 200ms;
+  -o-transition: opacity 200ms linear, -o-transform 0ms linear 200ms;
+  transition: opacity 200ms linear, transform 0ms linear 200ms;
+}
+
+#app-overlay.active {
+  opacity: 0.8;
+
+  -webkit-transform: translate3d(0px,0px,0px);
+  -moz-transform: translate3d(0px,0px,0px);
+  -ms-transform: translate3d(0px,0px,0px);
+  -o-transform: translate3d(0px,0px,0px);
+  transform: translate3d(0px,0px,0px);
+
+  -webkit-transition-delay: 0ms;
+  -moz-transition-delay: 0ms;
+  -mstransition-delay: 0ms;
+  -o-transition-delay: 0ms;
+  transition-delay: 0ms;
+}
