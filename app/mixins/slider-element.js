@@ -52,9 +52,9 @@ export default Ember.Mixin.create({
     // ini hammer bindings
     var hammer = new Hammer.Manager(this.get('element'));
       hammer.add(new Hammer.Pan({ enable: true, direction: Hammer.DIRECTION_HORIZONTAL, threshold: 10 }));
-      hammer.add(new Hammer.Tap({ enable: true }));
+      hammer.add(new Hammer.Press({ enable: true, time: 0 }));
 
-      hammer.on('tap', this.tapEvent.bind(this));
+      hammer.on('press', this.pressEvent.bind(this));
       hammer.on('panstart', this.panStart.bind(this));
       hammer.on('panmove', this.panMove.bind(this));
       hammer.on('panend', this.panEnd.bind(this));
@@ -79,9 +79,9 @@ export default Ember.Mixin.create({
 
   }.on('willDestroyElement'),
 
-  tapEvent: function(event) {
+  pressEvent: function(event) {
 
-    var newX = event.srcEvent.x - this.tapOffset;
+    var newX = event.center.x - this.tapOffset;
 
     if (newX < this.leftLimit) { newX = this.leftLimit; }
     if (newX > this.rightLimit) { newX = this.rightLimit; } 
@@ -101,10 +101,8 @@ export default Ember.Mixin.create({
   },
 
   panStart: function(event) {
-
     // set new start position
     this.startX = this.lastX;
-    
   },
 
   trackPercentage: function() {
