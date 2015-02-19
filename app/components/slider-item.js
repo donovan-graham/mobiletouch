@@ -16,6 +16,9 @@ export default Ember.Component.extend({
   percentage: 100,
   trackedPercentage: 0,
 
+  startX: 0,
+  startY: 0,
+  startZ: 0,
   deltaX: null,
 
   _setup: function() {
@@ -28,6 +31,7 @@ export default Ember.Component.extend({
     // get pixel-to-percentage ratio
     this.increment = 100 / this.sliderWidth;
 
+    // set start percentage
     this.set('trackedPercentage', this.get('percentage'));
 
     // set start position
@@ -79,7 +83,6 @@ export default Ember.Component.extend({
 
     var newPercentage = this.get('percentage') + (this.deltaX * this.increment);
 
-    console.log('this.deltaX', this.deltaX, 'decrement', this.deltaX * this.increment, 'percentage', this.get('percentage'), newPercentage);
     if (newPercentage > 100) { newPercentage = 100; }
     if (newPercentage < 0) { newPercentage = 0; }
 
@@ -89,65 +92,32 @@ export default Ember.Component.extend({
 
   panMove: function(event) {
 
-    // console.log('initialHandlePosition', this.initialHandlePosition, 'increment', this.increment)
     this.deltaX = event.deltaX;
-
-    // console.log(this.lastX)
 
     if (!this.rafPercId) {
       this.rafPercId = window.requestAnimationFrame(this.trackPercentage.bind(this));
     }
 
-      
     var newX = this.deltaX + this.startX; 
 
-    // console.log(newX);
-      
     if (newX < this.leftLimit) { newX = this.leftLimit; }
     if (newX > this.rightLimit) { newX = this.rightLimit; } 
 
-      // console.log('newX', newX);
 
-      this.lastX = newX;
+    this.lastX = newX;
 
-      if (!this.rafPanId) {
-        this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
-      }
-  
-
-    // if (event.deltaX < this.leftLimit){ 
-    //   this.lastX = this.sliderWidth * -1;
-    //   if (!this.rafPanId) {
-    //     this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
-    //   }
-    //   return;
-    // }
-    // if (event.deltaX > this.rightLimit){ 
-    //   this.lastX = 0;
-    //   if (!this.rafPanId) {
-    //     this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
-    //   }
-    //   return; 
-    // }
-
-    // this.lastX = newX;
-
-    // if (!this.rafPanId) {
-    //   this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
-    // }
+    if (!this.rafPanId) {
+      this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
+    }
     
   },
 
   panEnd: function() {
-    console.log('>>>> panEnd');
     this.set('percentage', this.get('trackedPercentage'));
   },
 
   animateHorizontalPan: function() {
-    this.rafPanId = null;      // release the lock
-
-    this.startY = 0;
-    this.startZ = 0;
+    this.rafPanId = null;
 
     var newX = this.lastX,
         style = '';
