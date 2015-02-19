@@ -1,5 +1,5 @@
 import Ember from 'ember';
-// import ENV from '../config/environment';
+// import ENV from 'mobiletouch/config/environment';
 
 export default Ember.Route.extend({
   
@@ -17,7 +17,7 @@ export default Ember.Route.extend({
     */
 
     /*
-    var ref = new Firebase('https://' + ENV.firebase + '.firebaseio.com/people');
+    var ref = new window.Firebase('https://' + ENV.firebase + '.firebaseio.com/people');
     ref.on("value", function(snapshot) {
       console.log(snapshot.val());
     }, function (errorObject) {

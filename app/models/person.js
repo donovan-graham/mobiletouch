@@ -1,5 +1,5 @@
 import DS from 'ember-data';
-import ENV from '../config/environment';
+import ENV from 'mobiletouch/config/environment';
 
 var Person = DS.Model.extend({
   
