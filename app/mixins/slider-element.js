@@ -16,6 +16,8 @@ export default Ember.Mixin.create({
   percentage: 100, // default
   trackedPercentage: 0,
 
+  duration: 200,
+
   tapOffset: null,
 
   startX: 0,
@@ -91,8 +93,8 @@ export default Ember.Mixin.create({
 
     this.lastX = newX;
 
-    if (!this.rafPanId) {
-      this.rafPanId = window.requestAnimationFrame(this.animateHorizontalPan.bind(this));
+    if (!this.rafSlideId) {
+      this.rafSlideId = window.requestAnimationFrame(this.animateHorizontalSlide.bind(this));
     }
 
     return false; 
@@ -154,6 +156,35 @@ export default Ember.Mixin.create({
     style += '-ms-transition: none; ';
     style += '-o-transition: none; ';
     style += 'transition: none; ';
+
+    style += '-webkit-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
+    style += '-moz-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+    style += '-ms-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+    style += '-o-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+    style += 'transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
+
+    this.sliderHandle.style.cssText = style;
+    this.sliderFill.style.cssText = style;
+  },
+
+  animateHorizontalSlide: function() {
+    this.rafSlideId = null;      // release the lock
+
+    var newX,
+        relativeDuration,
+        animation = 'ease-out';
+
+    newX = this.lastX;
+
+    relativeDuration = this.get('duration');
+
+    var style = '';   
+   
+    style += '-webkit-transition: -webkit-transform ' + relativeDuration + 'ms ' + animation + '; ';
+    style += '-moz-transition: -moz-transform ' + relativeDuration + 'ms ' + animation + '; ';
+    style += '-ms-transition: -ms-transform ' + relativeDuration + 'ms ' + animation + '; ';
+    style += '-o-transition: -o-transform ' + relativeDuration + 'ms ' + animation + '; ';
+    style += 'transition: transform ' + relativeDuration + 'ms ' + animation + '; ';
 
     style += '-webkit-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px) scale3d(1,1,1); ';
     style += '-moz-transform: translate3d(' + newX + 'px,' + this.startY + 'px,' + this.startZ + 'px); ';
