@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import ENV from '../config/environment';
+import ENV from 'mobiletouch/config/environment';
 
 
 export default Ember.Route.extend({
@@ -9,7 +9,7 @@ export default Ember.Route.extend({
     dinoHeight: function() {
       console.log(">>> dinoHeights");
 
-      var ref = new Firebase("https://dinosaur-facts.firebaseio.com/");
+      var ref = new window.Firebase("https://dinosaur-facts.firebaseio.com/");
 
       ref.orderByChild("height").on("child_added", function(snapshot) {
         console.log(snapshot.key() + " was " + snapshot.val().height + " meters tall");
@@ -22,9 +22,9 @@ export default Ember.Route.extend({
     dinoHeightStartAt3: function() {
 
       console.log(">>> dinoHeightStartAt3");
-      var ref = new Firebase("https://dinosaur-facts.firebaseio.com/");
+      var ref = new window.Firebase("https://dinosaur-facts.firebaseio.com/");
       ref.orderByChild("height").startAt(3).on("child_added", function(snapshot) {
-        console.log(snapshot.key())
+        console.log(snapshot.key());
       });
     },
 
@@ -49,7 +49,7 @@ export default Ember.Route.extend({
       var adapter = store.adapterFor(type); 
       var serializer = store.serializerFor(type);
 
-      var ref = new Firebase('https://' + ENV.firebase + '.firebaseio.com');
+      var ref = new window.Firebase('https://' + ENV.firebase + '.firebaseio.com');
       
       ref.authWithPassword({
         email:    'marc@example.com',
@@ -60,13 +60,13 @@ export default Ember.Route.extend({
         } else {
           var email = authData.password.email;
 
-          console.log("User authenticated:", authData)
+          console.log("User authenticated:", authData);
           console.log("User email:", email);
 
 
           // https://fiery-fire-1076.firebaseio.com/people.json?&orderBy=%22email%22&equalTo=%22marc@example.com%22&print=pretty
 
-          // var newRef = new Firebase('https://fiery-fire-1076.firebaseio.com/people')
+          // var newRef = new window.Firebase('https://fiery-fire-1076.firebaseio.com/people')
 
           ref.child('people')
             .orderByChild("email")
