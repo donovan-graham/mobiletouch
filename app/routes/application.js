@@ -55,6 +55,10 @@ export default Ember.Route.extend({
 
     gotoFireQuery: function() {
       this.transitionTo('fire-query');     
+    },
+
+    gotoSliderItems: function() {
+      this.transitionTo('slider-items');     
     }
 
 

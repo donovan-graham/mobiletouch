@@ -1,0 +1,36 @@
+#app-footer {
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  height: 33px;
+  background: darkblue;
+  color: white;
+  text-align: center;
+  z-index:109;
+}
+
+#app-footer .content{
+  display: block;
+  width:100%;
+  height: 100%;
+  line-height: 33px;
+  background: darkblue;
+  position: relative;
+  z-index:2;
+  border-top:1px solid white;
+}
+
+#app-footer .menu{
+  background: orange;
+  position: absolute;
+  top: 0;
+  z-index:1;
+  width: 100%;
+}
+
+
+#app-footer .menu li{
+  padding: 5px;
+}

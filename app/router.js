@@ -10,6 +10,7 @@ Router.map(function() {
   this.route("drag-list");
   this.route("five-hundred");
   this.route("fire-query");
+  this.route("slider-items");
 });
 
 export default Router;

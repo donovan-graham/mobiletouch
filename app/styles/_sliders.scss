@@ -1,0 +1,47 @@
+.slider-item{
+  border: 1px solid grey;
+  padding: 20px;
+  position: relative;
+  .progress-bar{
+    background: lightgrey;
+    height:10px;
+    width:100%;
+    position: relative;     
+    .handle{
+      width: 30px;
+      height: 30px;
+      background: white;
+      border: 1px solid lightgrey;
+      display: inline-block;
+      margin-top:-11px;
+      margin-left: -15px;
+      position: absolute;
+      left:0;
+      z-index: 1;
+    }
+    .fill{
+      position: relative;
+      display: block;
+      height: 100%;
+      width: 100%;
+      left:0;
+      top:0;
+      overflow: hidden;
+      .filler{
+        position: absolute;
+        display: block;
+        height: 100%;
+        width: 100%;
+        left: -100%;
+        background: red;
+      }
+    }
+  }
+  .progress{
+    position: absolute;
+    right: 5px;
+    bottom: -20px;
+    font-style: normal;
+  }
+  .toggle{}
+}
