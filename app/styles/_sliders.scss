@@ -40,8 +40,17 @@
   .progress{
     position: absolute;
     right: 5px;
-    bottom: -20px;
+    top: -20px;
     font-style: normal;
   }
-  .toggle{}
+  .toggle{
+    position: absolute;
+    top: 67px;
+    &.max{
+      right: -10px;
+    }
+    &.min{
+      left: -10px;
+    }
+  }
 }

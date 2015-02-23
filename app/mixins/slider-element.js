@@ -15,6 +15,7 @@ export default Ember.Mixin.create({
   increment: null,
   percentage: 100, // default
   trackedPercentage: 0,
+  newPercentage: null,
 
   duration: 200,
 
@@ -89,7 +90,7 @@ export default Ember.Mixin.create({
     this.deltaX = newX - this.lastX;
 
     this.trackPercentage();
-    this.set('percentage', this.get('trackedPercentage'));
+    this.set('percentage', this.newPercentage);
 
     this.lastX = newX;
 
@@ -108,12 +109,12 @@ export default Ember.Mixin.create({
   trackPercentage: function() {
     this.rafPercId = null;
 
-    var newPercentage = this.get('percentage') + (this.deltaX * this.increment);
+    this.newPercentage = this.get('percentage') + (this.deltaX * this.increment);
 
-    if (newPercentage > 100) { newPercentage = 100; }
-    if (newPercentage < 0) { newPercentage = 0; }
+    if (this.newPercentage > 100) { this.newPercentage = 100; }
+    if (this.newPercentage < 0) { this.newPercentage = 0; }
 
-    this.set('trackedPercentage', Math.round(newPercentage));
+    this.set('trackedPercentage', Math.round(this.newPercentage));
 
   },
 
@@ -139,7 +140,7 @@ export default Ember.Mixin.create({
   },
 
   panEnd: function() {
-    this.set('percentage', this.get('trackedPercentage'));
+    this.set('percentage', this.newPercentage);
     this.lastX = this.get('percentage') / this.increment;
   },
 
