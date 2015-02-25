@@ -21,6 +21,10 @@ export default Ember.Route.extend({
       });
     },
    
+    flipPage: function() {
+      document.getElementById('app-content').classList.toggle('rotated');
+    },
+
     toggleHeaderMenu: function() {
       document.getElementById('app-header-menu').classList.toggle('active');
     },

@@ -1,0 +1,111 @@
+
+@-webkit-keyframes flipIn {
+  0% { -webkit-transform: rotateY(90deg); }
+  100% { -webkit-transform: rotateY(0deg); }
+}
+
+@-webkit-keyframes flipOut {
+  100% { -webkit-transform: rotateY(-90deg); }
+}
+// @keyframes flipInLeft {
+//   from { -webkit-transform: rotateY(0deg); overflow-y: visible;}
+// }
+
+.app-wrapper{
+  -webkit-perspective: 1000;
+  -moz-perspective: 1000;
+  -o-perspective: 1000;
+  -ms-perspective: 1000;
+  perspective: 1000;
+}
+
+#app-content {
+  &.rotated{
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+  }
+  &.flipOut{
+    -webkit-animation: flipOut 600ms ease forwards;
+  }
+  &.flipIn{
+    -webkit-animation: flipIn 600ms ease forwards;
+  }
+
+  -webkit-transform: rotateY(0deg);
+  -moz-transform: rotateY(0deg);
+  -o-transform: rotateY(0deg);
+  -ms-transform: rotateY(0deg);
+
+  position: absolute;
+  top:50px;
+  bottom:33px;
+  left:0;
+  right:0;
+
+  -webkit-transition: 0.6s;
+  -moz-transition: 0.6s;
+  -o-transition: 0.6s;
+  -ms-transition: 0.6s;
+  transition: 0.6s;
+
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+
+  // -webkit-animation-name: flipInLeft;
+  // -webkit-animation-iteration-count: 1;
+  // -webkit-animation-timing-function: ease-in;
+  // -webkit-animation-duration: 800ms;
+  // -webkit-transform: rotateY(0deg);
+
+  #front, #back{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    .scroller{
+      overflow-y: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 55px 20px 20px;
+    }
+  }
+  #front{
+    z-index: 2;
+    -webkit-transform: rotateY(0deg) translateZ(1px);
+    -moz-transform: rotateY(0deg) translateZ(1px);
+    -o-transform: rotateY(0deg) translateZ(1px);
+    -ms-transform: rotateY(0deg) translateZ(1px);
+    transform: rotateY(0deg) translateZ(1px);
+  }
+  #back{
+    -webkit-transform: rotateY(-180deg) translateZ(1px);
+    -moz-transform: rotateY(-180deg) translateZ(1px);
+    -o-transform: rotateY(-180deg) translateZ(1px);
+    -ms-transform: rotateY(-180deg) translateZ(1px);
+    transform: rotateY(-180deg) translateZ(1px);
+
+    background-color: white;
+  }
+}
+
+// .app-wrapper:hover #app-content{
+//   -webkit-transform: rotateY(-180deg);
+//   overflow-y: visible;
+// }
+
+
